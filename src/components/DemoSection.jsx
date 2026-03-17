@@ -8,6 +8,22 @@ import {
 
 const DemoSection = () => {
     const containerRef = useRef(null);
+    const innerDivRef = useRef(null);
+
+    useEffect(() => {
+        if (!containerRef.current || !innerDivRef.current) return;
+        const observer = new ResizeObserver((entries) => {
+            const entry = entries[0];
+            if (entry) {
+                const width = entry.contentRect.width;
+                const scale = width / 1000;
+                // Apply scale directly to DOM to avoid React re-renders and scroll lag!
+                innerDivRef.current.style.transform = `scale(${scale})`;
+            }
+        });
+        observer.observe(containerRef.current);
+        return () => observer.disconnect();
+    }, []);
 
     // Scroll-driven animation tracking the stable container
     const { scrollYProgress } = useScroll({
@@ -136,25 +152,30 @@ const DemoSection = () => {
     return (
         <section className="section-wrapper demo-section-padding" style={{ position: 'relative', background: 'transparent' }}>
             {/* Stable tracker for inView that does not animate its transform/scale */}
-            <div ref={containerRef} className="demo-dashboard-tracker max-container">
+            <div ref={containerRef} className="demo-dashboard-tracker max-container" style={{ width: '100%', maxWidth: '1000px', aspectRatio: '16/9', margin: '0 auto' }}>
                 <motion.div
                     style={{
                         opacity: containerOpacity,
                         y: containerY,
                         scale: containerScale,
                         width: '100%',
-                        aspectRatio: '16/9',
-                        minHeight: 'auto',
+                        height: '100%',
                         borderRadius: '16px',
-                        background: '#f9fafb', // Light gray background matching real app
+                        background: '#f9fafb',
                         border: '1px solid rgba(0,0,0,0.1)',
                         position: 'relative',
                         overflow: 'hidden',
-                        display: 'flex',
-                        flexDirection: 'column',
                         boxShadow: '0 40px 80px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)'
                     }}
                 >
+                    <div ref={innerDivRef} style={{
+                        width: '1000px',
+                        height: '562.5px', // 16:9 ratio of 1000
+                        transformOrigin: 'top left',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        background: '#f9fafb',
+                    }}>
                 {/* Mac-like Window Header (Light Mode) */}
                 <div style={{
                     height: '40px',
@@ -176,8 +197,8 @@ const DemoSection = () => {
 
                 <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
 
-                    {/* Sidebar — hidden on tablet/mobile */}
-                    <div className="hide-on-tablet" style={{ width: '240px', borderRight: '1px solid #e5e7eb', background: '#ffffff', padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '24px', flexShrink: 0 }}>
+                    {/* Sidebar — always visible because we scale the view! */}
+                    <div style={{ width: '240px', borderRight: '1px solid #e5e7eb', background: '#ffffff', padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '24px', flexShrink: 0 }}>
                         <div>
                             <h2 style={{ fontSize: '14px', fontWeight: 600, color: '#111827', marginBottom: '16px', paddingLeft: '8px' }}>Admin Workspace</h2>
                             <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -209,16 +230,16 @@ const DemoSection = () => {
                     </div>
 
                     {/* Main Content */}
-                    <div style={{ flex: 1, padding: 'clamp(16px, 3vw, 32px)', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 3vw, 24px)' }}>
+                    <div style={{ flex: 1, padding: '32px', overflowY: 'hidden', display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <motion.h1 className="text-fluid-h3" style={{ opacity: titleOpacity, y: titleY, fontWeight: 600, color: '#111827' }}>
+                            <motion.h1 style={{ opacity: titleOpacity, y: titleY, fontWeight: 600, color: '#111827', fontSize: '24px' }}>
                                 Dashboard Overview
                             </motion.h1>
                         </div>
 
                         {/* Summary Cards */}
-                        <div className="grid-responsive-4col">
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
                             {metrics.map((metric, i) => (
                                 <motion.div
                                     key={i}
@@ -243,7 +264,7 @@ const DemoSection = () => {
                         </div>
 
                         {/* Middle Row: Table & Chart */}
-                        <div className="flex-responsive-row" style={{ flex: 1, alignItems: 'flex-start' }}>
+                        <div style={{ display: 'flex', flex: 1, gap: '16px', alignItems: 'stretch' }}>
 
                             {/* Live Active Sessions Table */}
                             <motion.div
@@ -266,7 +287,7 @@ const DemoSection = () => {
                                             <th style={{ padding: '12px 20px', fontWeight: 500 }}>User</th>
                                             <th style={{ padding: '12px 20px', fontWeight: 500 }}>Config</th>
                                             <th style={{ padding: '12px 20px', fontWeight: 500 }}>Status</th>
-                                            <th style={{ padding: '12px 20px', fontWeight: 500 }} className="hide-on-mobile">Last Seen</th>
+                                            <th style={{ padding: '12px 20px', fontWeight: 500 }}>Last Seen</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -282,7 +303,7 @@ const DemoSection = () => {
                                                         {session.status}
                                                     </span>
                                                 </td>
-                                                <td style={{ padding: '12px 20px', color: '#6b7280' }} className="hide-on-mobile">{session.time}</td>
+                                                <td style={{ padding: '12px 20px', color: '#6b7280' }}>{session.time}</td>
                                             </motion.tr>
                                         ))}
                                     </tbody>
@@ -344,6 +365,7 @@ const DemoSection = () => {
                         </div>
                     </div>
                 </div>
+                    </div>
             </motion.div>
             </div>
 
