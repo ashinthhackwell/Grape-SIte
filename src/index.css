@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-color: #fafafa;
+  --text-primary: #111111;
+  --text-secondary: #666666;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --card-bg: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Antigravity Style Essential Layers */
+.dot-background {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+::selection {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.gradient-text {
+  background: linear-gradient(to right bottom, #111111, #666666);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-color);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.glass-panel:hover {
+  border-color: rgba(0, 0, 0, 0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+}
+
+@property --glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spin-gradient {
+  0% {
+    --glow-angle: 0deg;
+  }
+
+  100% {
+    --glow-angle: 360deg;
+  }
+}
+
+/* Premium Iridescent Border Hover Utility */
+.rainbow-border {
+  position: relative;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.rainbow-border::before {
+  content: "";
+  position: absolute;
+  /* Glow sits entirely outside the button shell */
+  inset: -1.5px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--glow-angle) at 50% 50%,
+      #ff007f 0%,
+      #7928ca 20%,
+      #0070f3 40%,
+      #00dfd8 60%,
+      #7928ca 80%,
+      #ff007f 100%);
+  z-index: -1;
+  animation: spin-gradient 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Pure edge render, no blurring for a crisp border */
+}
+
+.rainbow-border:hover::before {
+  opacity: 1;
+}
+
+/* 
+  Sleek Premium Button Glow 
+  Positions a slowly rotating conic gradient outside the strict inner button bounds
+*/
+.premium-glow-btn {
+  position: relative;
+  z-index: 1;
+  border-radius: 9999px;
+  /* full pill */
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.premium-glow-btn::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  /* Soft outer glow */
+  border-radius: inherit;
+  background: conic-gradient(from var(--glow-angle) at 50% 50%,
+      #ff007f 0%,
+      #7928ca 20%,
+      #0070f3 40%,
+      #00dfd8 60%,
+      #7928ca 80%,
+      #ff007f 100%);
+  z-index: -1;
+  opacity: 0;
+  animation: spin-gradient 3s linear infinite;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: blur(8px);
+}
+
+.premium-glow-btn::after {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  /* Hard sharp outer border */
+  border-radius: inherit;
+  background: conic-gradient(from var(--glow-angle) at 50% 50%,
+      #ff007f 0%,
+      #7928ca 20%,
+      #0070f3 40%,
+      #00dfd8 60%,
+      #7928ca 80%,
+      #ff007f 100%);
+  z-index: -1;
+  opacity: 0;
+  animation: spin-gradient 3s linear infinite;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.premium-glow-btn:hover::before {
+  opacity: 0.8;
+  /* Subtle outer bloom */
+}
+
+.premium-glow-btn:hover::after {
+  opacity: 1;
+  /* Sharp edge */
+}
+
+/* Inner button shell that stays clean */
+.premium-glow-btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  /* background specified via inline style */
+}
+
+/* Glowing rotating background blob utility */
+.rainbow-glow-blob {
+  position: absolute;
+  background: conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg);
+  filter: blur(80px);
+  border-radius: 50%;
+  opacity: 0.1;
+  animation: spin 10s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bg-pan {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px)
+  }
+
+  50% {
+    transform: translateY(-10px)
+  }
+
+  100% {
+    transform: translateY(0px)
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ═══════════════════════════════════════════════════ */
+
+/* Tablet landscape & small laptops */
+@media (max-width: 1024px) {
+  .hide-on-tablet {
+    display: none !important;
+  }
+}
+
+/* Tablet portrait */
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .hide-on-small {
+    display: none !important;
+  }
+}
