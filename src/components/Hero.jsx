@@ -167,7 +167,7 @@ const Hero = () => {
                     >
                         <div className="premium-glow-btn-inner" style={{ background: '#111', padding: '16px 36px' }}>
                             <Monitor size={18} />
-                            <span>Download for Mithun</span>
+                            <span>Download for Windows</span>
                         </div>
                     </motion.a>
 
