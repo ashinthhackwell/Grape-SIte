@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import GrapeParticles from './GrapeParticles';
+import { DOWNLOAD_LINKS } from '../constants/links';
 
 const OrganizationSize = () => {
     const sectionRef = useRef(null);
@@ -112,14 +113,19 @@ const OrganizationSize = () => {
                         Achieve new heights
                     </p>
 
-                    <a href="#" className="premium-glow-btn" style={{
-                        color: '#fff',
-                        textDecoration: 'none',
-                        fontWeight: 500,
-                        fontSize: '16px',
-                        borderRadius: '999px',
-                        width: isMobile ? '100%' : 'auto'
-                    }}>
+                    <a 
+                        href={DOWNLOAD_LINKS.WINDOWS} 
+                        download
+                        className="premium-glow-btn" 
+                        style={{
+                            color: '#fff',
+                            textDecoration: 'none',
+                            fontWeight: 500,
+                            fontSize: '16px',
+                            borderRadius: '999px',
+                            width: isMobile ? '100%' : 'auto'
+                        }}
+                    >
                         <div className="premium-glow-btn-inner" style={{ background: '#111', padding: '16px 36px', borderRadius: '999px', width: '100%' }}>
                             <span>Download</span>
                         </div>

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Apple, Monitor, ArrowRight } from 'lucide-react';
 import InteractiveCanvas from './InteractiveCanvas';
+import { DOWNLOAD_LINKS } from '../constants/links';
 
 const Typewriter = ({ text, speed = 40, onDone }) => {
     const [displayed, setDisplayed] = useState('');
@@ -97,7 +98,8 @@ const FinalDownload = () => {
                     }}
                 >
                     <motion.a
-                        href="#"
+                        href={DOWNLOAD_LINKS.WINDOWS}
+                        download
                         className="premium-glow-btn"
                         whileHover={{ scale: 1.04 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
@@ -110,7 +112,8 @@ const FinalDownload = () => {
                     </motion.a>
 
                     <motion.a
-                        href="#"
+                        href={DOWNLOAD_LINKS.MACOS}
+                        download
                         className="premium-glow-btn"
                         whileHover={{ scale: 1.04 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}

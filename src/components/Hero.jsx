@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Apple, Monitor } from 'lucide-react';
 import InteractiveCanvas from './InteractiveCanvas';
+import { DOWNLOAD_LINKS } from '../constants/links';
 
 const Hero = () => {
     const { scrollY } = useScroll();
@@ -143,7 +144,8 @@ const Hero = () => {
                     }}
                 >
                     <motion.a
-                        href="#"
+                        href={DOWNLOAD_LINKS.WINDOWS}
+                        download
                         className="premium-glow-btn"
                         whileHover={{ scale: 1.04 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
@@ -156,7 +158,8 @@ const Hero = () => {
                     </motion.a>
 
                     <motion.a
-                        href="#"
+                        href={DOWNLOAD_LINKS.MACOS}
+                        download
                         className="premium-glow-btn"
                         whileHover={{ scale: 1.04 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}

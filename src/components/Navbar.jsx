@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { DOWNLOAD_LINKS } from '../constants/links';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -90,12 +91,17 @@ const Navbar = () => {
                     </div>
                 </Link>
 
-                <a href="#" className="premium-glow-btn" style={{
-                    color: '#fff',
-                    textDecoration: 'none',
-                    fontWeight: 500,
-                    fontSize: '14px',
-                }}>
+                <a 
+                    href={DOWNLOAD_LINKS.WINDOWS} 
+                    download
+                    className="premium-glow-btn" 
+                    style={{
+                        color: '#fff',
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        fontSize: '14px',
+                    }}
+                >
                     <div className="premium-glow-btn-inner" style={{ background: '#111', padding: '8px clamp(16px, 3vw, 24px)' }}>
                         <span>Download</span>
                     </div>
