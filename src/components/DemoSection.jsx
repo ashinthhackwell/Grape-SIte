@@ -54,14 +54,14 @@ const DemoSection = () => {
     ];
 
     return (
-        <section style={{ 
-            padding: isMobile ? '60px 20px 160px 20px' : '80px 24px 280px 24px', 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center', 
-            gap: isMobile ? '40px' : '80px', 
-            position: 'relative', 
-            background: 'transparent' 
+        <section style={{
+            padding: isMobile ? '60px 20px 160px 20px' : '80px 24px 280px 24px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: isMobile ? '40px' : '80px',
+            position: 'relative',
+            background: 'transparent'
         }}>
             <motion.div
                 ref={containerRef}
@@ -152,10 +152,10 @@ const DemoSection = () => {
                         </div>
 
                         {/* Summary Cards */}
-                        <div style={{ 
-                            display: 'grid', 
-                            gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)', 
-                            gap: '16px' 
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
+                            gap: '16px'
                         }}>
                             {metrics.map((metric, i) => (
                                 <motion.div
@@ -182,11 +182,11 @@ const DemoSection = () => {
                         </div>
 
                         {/* Middle Row: Table & Chart */}
-                        <div style={{ 
-                            display: 'flex', 
-                            flexDirection: isMobile ? 'column' : 'row', 
-                            gap: '24px', 
-                            flex: 1 
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: isMobile ? 'column' : 'row',
+                            gap: '24px',
+                            flex: 1
                         }}>
 
                             {/* Live Active Sessions Table */}

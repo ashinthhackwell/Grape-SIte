@@ -7,7 +7,7 @@
   --border-color: rgba(0, 0, 0, 0.08);
   --glass-bg: rgba(255, 255, 255, 0.7);
   --card-bg: #ffffff;
-  
+
   /* Responsive Spacing Tokens */
   --section-padding-x: clamp(20px, 5vw, 40px);
   --section-padding-y: clamp(60px, 10vw, 120px);
@@ -257,7 +257,7 @@ body {
   .hide-on-mobile {
     display: none !important;
   }
-  
+
   :root {
     --section-padding-y: 60px;
   }

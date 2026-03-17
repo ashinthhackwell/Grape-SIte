@@ -1,0 +1,29 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ✅ FIX 1: Updated checkout
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ✅ FIX 2: Updated node setup
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Build Vite project
+      - name: Build project
+        run: npm run build

@@ -74,15 +74,15 @@ const Footer = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, margin: '-20px' }}
                 transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                style={{ 
-                    display: 'flex', 
-                    flexDirection: isMobile ? 'column' : 'row', 
-                    justifyContent: 'space-between', 
+                style={{
+                    display: 'flex',
+                    flexDirection: isMobile ? 'column' : 'row',
+                    justifyContent: 'space-between',
                     alignItems: isMobile ? 'center' : 'flex-start',
                     gap: isMobile ? '12px' : '0',
-                    color: 'var(--text-secondary)', 
-                    fontSize: '0.875rem', 
-                    position: 'relative', 
+                    color: 'var(--text-secondary)',
+                    fontSize: '0.875rem',
+                    position: 'relative',
                     zIndex: 1,
                     textAlign: isMobile ? 'center' : 'left'
                 }}

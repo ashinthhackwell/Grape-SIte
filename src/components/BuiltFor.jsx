@@ -48,7 +48,7 @@ const BuiltFor = () => {
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
                 style={{
-                    flex: isMobile ? '1 1 100%' : '0 1 500px', 
+                    flex: isMobile ? '1 1 100%' : '0 1 500px',
                     paddingTop: isMobile ? '0' : '120px',
                     textAlign: isMobile ? 'center' : 'left'
                 }}

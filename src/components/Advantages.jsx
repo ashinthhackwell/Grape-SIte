@@ -27,20 +27,20 @@ const Advantages = () => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
     return (
-        <section style={{ 
-            padding: isMobile ? '60px 20px 80px 20px' : '40px 24px 160px 24px', 
-            maxWidth: '1200px', 
-            margin: '0 auto', 
-            position: 'relative', 
-            overflow: 'hidden' 
+        <section style={{
+            padding: isMobile ? '60px 20px 80px 20px' : '40px 24px 160px 24px',
+            maxWidth: '1200px',
+            margin: '0 auto',
+            position: 'relative',
+            overflow: 'hidden'
         }}>
             {/* The global background overrides this but keeping relative positioning */}
-            <div style={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                gap: isMobile ? '80px' : '240px', 
-                position: 'relative', 
-                zIndex: 1 
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: isMobile ? '80px' : '240px',
+                position: 'relative',
+                zIndex: 1
             }}>
                 {advantages.map((adv, idx) => (
                     <AdvantageRow key={idx} {...adv} isMobile={isMobile} />
@@ -79,13 +79,13 @@ const AdvantageRow = ({ title, description, reverse, id, isMobile }) => {
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 style={{ flex: isMobile ? '1 1 100%' : '1 1 400px', textAlign: isMobile ? 'center' : 'left' }}
             >
-                <h3 style={{ 
-                    fontSize: isMobile ? '2.25rem' : 'clamp(2.5rem, 4vw, 3.25rem)', 
-                    fontWeight: 500, 
-                    letterSpacing: '-0.02em', 
-                    marginBottom: '24px', 
-                    color: '#111827', 
-                    lineHeight: 1.1 
+                <h3 style={{
+                    fontSize: isMobile ? '2.25rem' : 'clamp(2.5rem, 4vw, 3.25rem)',
+                    fontWeight: 500,
+                    letterSpacing: '-0.02em',
+                    marginBottom: '24px',
+                    color: '#111827',
+                    lineHeight: 1.1
                 }}>
                     {title}
                 </h3>
