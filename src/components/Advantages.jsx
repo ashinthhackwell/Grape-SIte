@@ -3,7 +3,6 @@ import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { ShieldAlert, Activity, Users, Clock, Cpu, Server, Lock } from 'lucide-react';
 
 const Advantages = () => {
-
     const advantages = [
         {
             title: "Zero-Latency Telemetry",
@@ -25,19 +24,33 @@ const Advantages = () => {
         }
     ];
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     return (
-        <section className="section-wrapper" style={{ paddingBottom: 'clamp(80px, 12vw, 160px)', maxWidth: '1200px', margin: '0 auto', position: 'relative', overflow: 'hidden' }}>
+        <section style={{ 
+            padding: isMobile ? '60px 20px 80px 20px' : '40px 24px 160px 24px', 
+            maxWidth: '1200px', 
+            margin: '0 auto', 
+            position: 'relative', 
+            overflow: 'hidden' 
+        }}>
             {/* The global background overrides this but keeping relative positioning */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(80px, 15vw, 240px)', position: 'relative', zIndex: 1 }}>
+            <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: isMobile ? '80px' : '240px', 
+                position: 'relative', 
+                zIndex: 1 
+            }}>
                 {advantages.map((adv, idx) => (
-                    <AdvantageRow key={idx} {...adv} />
+                    <AdvantageRow key={idx} {...adv} isMobile={isMobile} />
                 ))}
             </div>
         </section>
     );
 };
 
-const AdvantageRow = ({ title, description, reverse, id }) => {
+const AdvantageRow = ({ title, description, reverse, id, isMobile }) => {
     const x = useMotionValue(200);
     const y = useMotionValue(200);
 
@@ -45,14 +58,18 @@ const AdvantageRow = ({ title, description, reverse, id }) => {
     const rotateY = useTransform(x, [0, 400], [-5, 5]);
 
     function handleMouse(event) {
+        if (isMobile) return;
         const rect = event.currentTarget.getBoundingClientRect();
         x.set(event.clientX - rect.left);
         y.set(event.clientY - rect.top);
     }
 
     return (
-        <div className={reverse ? "flex-responsive-row-reverse" : "flex-responsive-row"} style={{
+        <div style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : (reverse ? 'row-reverse' : 'row'),
             alignItems: 'center',
+            gap: isMobile ? '40px' : '100px',
             flexWrap: 'wrap'
         }}>
             <motion.div
@@ -60,12 +77,19 @@ const AdvantageRow = ({ title, description, reverse, id }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, margin: "-100px" }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                style={{ flex: '1 1 400px' }}
+                style={{ flex: isMobile ? '1 1 100%' : '1 1 400px', textAlign: isMobile ? 'center' : 'left' }}
             >
-                <h3 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.25rem)', fontWeight: 500, letterSpacing: '-0.02em', marginBottom: '24px', color: '#111827', lineHeight: 1.1 }}>
+                <h3 style={{ 
+                    fontSize: isMobile ? '2.25rem' : 'clamp(2.5rem, 4vw, 3.25rem)', 
+                    fontWeight: 500, 
+                    letterSpacing: '-0.02em', 
+                    marginBottom: '24px', 
+                    color: '#111827', 
+                    lineHeight: 1.1 
+                }}>
                     {title}
                 </h3>
-                <p className="text-fluid-p" style={{ color: '#4b5563', fontWeight: 400 }}>
+                <p style={{ color: '#4b5563', fontSize: isMobile ? '1.1rem' : '1.25rem', lineHeight: 1.6, fontWeight: 400 }}>
                     {description}
                 </p>
             </motion.div>
@@ -75,7 +99,7 @@ const AdvantageRow = ({ title, description, reverse, id }) => {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: false, margin: "-100px" }}
                 transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                style={{ flex: '1 1 100%', maxWidth: '500px', width: '100%', perspective: 1200 }}
+                style={{ flex: isMobile ? '1 1 100%' : '1 1 500px', perspective: 1200, width: '100%' }}
             >
                 <motion.div
                     onMouseMove={handleMouse}
@@ -86,9 +110,9 @@ const AdvantageRow = ({ title, description, reverse, id }) => {
                     style={{
                         position: 'relative',
                         width: '100%',
-                        height: 'clamp(300px, 40vw, 400px)',
-                        rotateX,
-                        rotateY,
+                        height: isMobile ? '350px' : '400px',
+                        rotateX: isMobile ? 0 : rotateX,
+                        rotateY: isMobile ? 0 : rotateY,
                         transformStyle: "preserve-3d",
                         display: 'flex',
                         alignItems: 'center',

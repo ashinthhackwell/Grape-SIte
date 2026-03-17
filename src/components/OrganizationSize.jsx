@@ -46,6 +46,8 @@ const OrganizationSize = () => {
         setHoverState('none');
     };
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     return (
         <section
             id="organization-size-section"
@@ -53,34 +55,38 @@ const OrganizationSize = () => {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={{
-                minHeight: '100vh',
-                padding: '20px 24px',
+                minHeight: isMobile ? 'auto' : '100vh',
+                padding: isMobile ? '80px 20px' : '20px 24px',
                 position: 'relative',
                 overflow: 'hidden',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: '#ffffff', // Clean white background for particles
+                background: '#ffffff',
                 borderTop: '1px solid rgba(0,0,0,0.04)'
             }}
         >
-            {/* Observer invisible anchor to trigger centering */}
+            {/* Observer... skipped */}
             <motion.div
                 onViewportEnter={() => {
-                    // When the user scrolls deep enough to hit this anchor, gently glide the rest of the section into center focus
+                    if (isMobile) return;
                     const element = document.getElementById('organization-size-section');
                     if (element) {
                         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                 }}
-                viewport={{ once: false, amount: 0.3 }} // Trigger when 30% of the section is visible
+                viewport={{ once: false, amount: 0.3 }}
                 style={{ position: 'absolute', top: '30%', left: 0, width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }}
             />
 
-            {/* The interactive organic particle background replaces the static CSS grid */}
             <GrapeParticles mousePos={mousePos} hoverState={hoverState} cardRects={cardRects} />
 
-            <div className="grid-responsive-2col max-container" style={{
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(340px, 1fr))',
+                gap: isMobile ? '20px' : '40px',
+                width: '100%',
+                maxWidth: '1200px',
                 position: 'relative',
                 zIndex: 1
             }}>
@@ -90,7 +96,7 @@ const OrganizationSize = () => {
                     onMouseEnter={() => setHoverState('teams')}
                     onMouseLeave={() => setHoverState('none')}
                     style={{
-                        padding: 'clamp(60px, 8vw, 120px) clamp(20px, 4vw, 40px)',
+                        padding: isMobile ? '60px 20px' : '120px 40px',
                         textAlign: 'center',
                         position: 'relative',
                         zIndex: 2,
@@ -111,10 +117,10 @@ const OrganizationSize = () => {
                         Available at no charge
                     </div>
 
-                    <h3 className="text-fluid-h3" style={{ fontWeight: 400, marginBottom: '8px', letterSpacing: '-0.04em', color: '#111' }}>
+                    <h3 style={{ fontSize: isMobile ? '2.5rem' : '3rem', fontWeight: 400, marginBottom: '8px', letterSpacing: '-0.04em', color: '#111' }}>
                         For developers
                     </h3>
-                    <p style={{ color: '#4b5563', marginBottom: '48px', fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 400, letterSpacing: '-0.04em', lineHeight: 1.2 }}>
+                    <p style={{ color: '#4b5563', marginBottom: '48px', fontSize: isMobile ? '1.75rem' : '2.5rem', fontWeight: 400, letterSpacing: '-0.04em', lineHeight: 1.2 }}>
                         Achieve new heights
                     </p>
 
@@ -123,9 +129,10 @@ const OrganizationSize = () => {
                         textDecoration: 'none',
                         fontWeight: 500,
                         fontSize: '16px',
-                        borderRadius: '999px'
+                        borderRadius: '999px',
+                        width: isMobile ? '100%' : 'auto'
                     }}>
-                        <div className="premium-glow-btn-inner" style={{ background: '#111', padding: '16px 36px', borderRadius: '999px' }}>
+                        <div className="premium-glow-btn-inner" style={{ background: '#111', padding: '16px 36px', borderRadius: '999px', width: '100%' }}>
                             <span>Download</span>
                         </div>
                     </a>
@@ -137,7 +144,7 @@ const OrganizationSize = () => {
                     onMouseEnter={() => setHoverState('enterprise')}
                     onMouseLeave={() => setHoverState('none')}
                     style={{
-                        padding: 'clamp(60px, 8vw, 120px) clamp(20px, 4vw, 40px)',
+                        padding: isMobile ? '60px 20px' : '120px 40px',
                         textAlign: 'center',
                         position: 'relative',
                         zIndex: 2,
@@ -158,10 +165,10 @@ const OrganizationSize = () => {
                         Coming soon
                     </div>
 
-                    <h3 className="text-fluid-h3" style={{ fontWeight: 400, marginBottom: '8px', letterSpacing: '-0.04em', color: '#111' }}>
+                    <h3 style={{ fontSize: isMobile ? '2.5rem' : '3rem', fontWeight: 400, marginBottom: '8px', letterSpacing: '-0.04em', color: '#111' }}>
                         For organizations
                     </h3>
-                    <p style={{ color: '#4b5563', marginBottom: '48px', fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 400, letterSpacing: '-0.04em', lineHeight: 1.2 }}>
+                    <p style={{ color: '#4b5563', marginBottom: '48px', fontSize: isMobile ? '1.75rem' : '2.5rem', fontWeight: 400, letterSpacing: '-0.04em', lineHeight: 1.2 }}>
                         Level up your entire team
                     </p>
 
@@ -170,9 +177,10 @@ const OrganizationSize = () => {
                         textDecoration: 'none',
                         fontWeight: 500,
                         fontSize: '16px',
-                        borderRadius: '999px'
+                        borderRadius: '999px',
+                        width: isMobile ? '100%' : 'auto'
                     }}>
-                        <div className="premium-glow-btn-inner" style={{ background: '#fff', padding: '16px 36px', borderRadius: '999px' }}>
+                        <div className="premium-glow-btn-inner" style={{ background: '#fff', padding: '16px 36px', borderRadius: '999px', width: '100%' }}>
                             <span>Notify me</span>
                         </div>
                     </a>

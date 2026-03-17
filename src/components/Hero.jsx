@@ -57,7 +57,17 @@ const Hero = () => {
     const isTypingLine2 = isTyping && typedText.includes('\n');
 
     return (
-        <section className="section-wrapper" style={{ minHeight: '100vh', justifyContent: 'center', background: 'transparent' }}>
+        <section style={{
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '80px var(--section-padding-x) 0',
+            position: 'relative',
+            overflow: 'hidden',
+            background: 'transparent'
+        }}>
             {/* Beautiful Custom Interactive Node Canvas with Physics */}
             <InteractiveCanvas />
 
@@ -66,12 +76,14 @@ const Hero = () => {
             >
                 <motion.div>
                     <motion.h1
-                        className="text-fluid-h1"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                         style={{
+                            fontSize: 'clamp(3rem, 6vw, 5.5rem)',
                             fontWeight: 500, // Leaner modern typography weight (Inter/Geist)
+                            letterSpacing: '0.05em', // Elegantly tight
+                            lineHeight: 1,
                             marginBottom: '0',
                             color: '#111',
                             display: 'inline-block'
@@ -92,7 +104,7 @@ const Hero = () => {
                                 }}
                             />
                         )}
-                        <span className="gradient-text" style={{ display: 'block', marginTop: '4px', paddingLeft: "40px", fontSize: 'clamp(1.4rem, 3vw, 2.4rem)', whiteSpace: 'nowrap', background: 'linear-gradient(to right bottom, #111, #888)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                        <span className="gradient-text" style={{ display: 'block', marginTop: '4px', paddingLeft: window.innerWidth < 768 ? "0" : "40px", fontSize: 'clamp(1.4rem, 3vw, 2.4rem)', whiteSpace: 'nowrap', background: 'linear-gradient(to right bottom, #111, #888)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                             {typedLine2}
                             {isTypingLine2 && (
                                 <motion.span
@@ -115,16 +127,19 @@ const Hero = () => {
 
 
                 <motion.div
-                    className="flex-responsive-row"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: isTyping ? 0 : 1, y: isTyping ? 20 : 0 }}
                     transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                     style={{
+                        display: 'flex',
+                        gap: 'clamp(12px, 3vw, 24px)',
                         justifyContent: 'center',
-                        flexWrap: 'wrap',
-                        marginTop: 'clamp(28px, 4vw, 40px)',
-                        marginBottom: 'clamp(60px, 8vw, 100px)',
+                        flexDirection: window.innerWidth < 768 ? 'column' : 'row',
+                        alignItems: 'center',
+                        marginTop: '40px',
+                        marginBottom: '100px',
                         pointerEvents: isTyping ? 'none' : 'auto',
+                        width: '100%'
                     }}
                 >
                     <motion.a
@@ -132,9 +147,9 @@ const Hero = () => {
                         className="premium-glow-btn"
                         whileHover={{ scale: 1.04 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        style={{ color: '#fff' }}
+                        style={{ color: '#fff', width: window.innerWidth < 480 ? '100%' : 'auto' }}
                     >
-                        <div className="premium-glow-btn-inner mobile-full-btn" style={{ background: '#111', padding: '16px 36px' }}>
+                        <div className="premium-glow-btn-inner" style={{ background: '#111', padding: '16px clamp(24px, 5vw, 36px)', width: '100%' }}>
                             <Monitor size={18} />
                             <span>Download for Windows</span>
                         </div>
@@ -142,12 +157,12 @@ const Hero = () => {
 
                     <motion.a
                         href="#"
-                        className="premium-glow-btn mobile-full-btn"
+                        className="premium-glow-btn"
                         whileHover={{ scale: 1.04 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        style={{ color: '#111' }}
+                        style={{ color: '#111', width: window.innerWidth < 480 ? '100%' : 'auto' }}
                     >
-                        <div className="premium-glow-btn-inner mobile-full-btn" style={{ background: '#fff', padding: '16px 36px', border: '1px solid rgba(0,0,0,0.1)' }}>
+                        <div className="premium-glow-btn-inner" style={{ background: '#fff', padding: '16px clamp(24px, 5vw, 36px)', border: '1px solid rgba(0,0,0,0.1)', width: '100%' }}>
                             <Apple size={18} />
                             <span>Download for Mac</span>
                         </div>

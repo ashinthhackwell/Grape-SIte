@@ -47,11 +47,13 @@ const Mission = () => {
     const attrOpacity = useTransform(scrollYProgress, [0.7, 1], [0, 1]);
     const attrY = useTransform(scrollYProgress, [0.7, 1], [10, 0]);
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     return (
         <section
             ref={containerRef}
             style={{
-                padding: '160px 24px 200px 24px',
+                padding: isMobile ? '80px 20px' : '160px 24px 200px 24px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',

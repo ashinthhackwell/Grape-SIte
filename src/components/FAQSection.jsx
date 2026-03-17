@@ -116,7 +116,7 @@ const FAQItem = ({ question, answer, isOpen, onClick, index }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: 'clamp(16px, 2vw, 20px) clamp(20px, 3vw, 24px)',
+                padding: '20px 24px',
                 gap: '16px'
             }}>
                 <span style={{
@@ -162,7 +162,7 @@ const FAQItem = ({ question, answer, isOpen, onClick, index }) => {
                         style={{ overflow: 'hidden' }}
                     >
                         <div style={{
-                            padding: '0 clamp(20px, 3vw, 24px) clamp(16px, 2vw, 20px)',
+                            padding: '0 24px 20px',
                             fontSize: '0.88rem',
                             color: '#64748b',
                             lineHeight: 1.7,
@@ -178,6 +178,7 @@ const FAQItem = ({ question, answer, isOpen, onClick, index }) => {
 };
 
 const FAQSection = () => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
     const [openIndex, setOpenIndex] = useState(null);
 
     const toggle = (index) => {
@@ -192,8 +193,8 @@ const FAQSection = () => {
             width: '100%',
             maxWidth: '860px',
             margin: '0 auto',
-            padding: '0 clamp(16px, 3vw, 20px)',
-            marginBottom: 'clamp(80px, 10vw, 120px)'
+            padding: isMobile ? '0 0' : '0 20px',
+            marginBottom: isMobile ? '80px' : '120px'
         }}>
             {/* Main Section Header */}
             <motion.div
@@ -201,9 +202,10 @@ const FAQSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                style={{ textAlign: 'center', marginBottom: '56px' }}
+                style={{ textAlign: 'center', marginBottom: isMobile ? '40px' : '56px' }}
             >
-                <h2 className="text-fluid-h2" style={{
+                <h2 style={{
+                    fontSize: isMobile ? '2rem' : '2.4rem',
                     fontWeight: 700,
                     color: '#111',
                     margin: '0 0 8px',
@@ -213,7 +215,7 @@ const FAQSection = () => {
                     Got questions?
                 </h2>
                 <p style={{
-                    fontSize: '1.1rem',
+                    fontSize: isMobile ? '1rem' : '1.1rem',
                     color: '#94a3b8',
                     fontWeight: 400,
                     margin: 0
@@ -227,7 +229,7 @@ const FAQSection = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '12px',
-                marginBottom: '64px'
+                marginBottom: isMobile ? '48px' : '64px'
             }}>
                 {generalFaqs.map((item, index) => (
                     <FAQItem
@@ -247,13 +249,15 @@ const FAQSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                style={{ textAlign: 'center', marginBottom: '40px' }}
+                style={{ textAlign: 'center', marginBottom: isMobile ? '32px' : '40px' }}
             >
-                <h3 className="text-fluid-h3" style={{
+                <h3 style={{
+                    fontSize: isMobile ? '1.5rem' : '1.8rem',
                     fontWeight: 700,
                     color: '#111',
                     margin: 0,
-                    letterSpacing: '-0.02em'
+                    letterSpacing: '-0.02em',
+                    padding: isMobile ? '0 10px' : '0'
                 }}>
                     Questions Every Founder Thinks About
                 </h3>

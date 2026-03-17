@@ -47,11 +47,12 @@ const FinalDownload = () => {
     const isInView = useInView(sectionRef, { once: false, margin: "-100px" });
     const [textDone, setTextDone] = useState(false);
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     return (
-        <section ref={sectionRef} className="section-wrapper" style={{
-            paddingTop: 'clamp(140px, 15vw, 260px)',
-            paddingBottom: 'clamp(120px, 12vw, 200px)',
-            minHeight: '110vh',
+        <section ref={sectionRef} style={{
+            padding: isMobile ? '120px 0 100px' : '260px 0 200px',
+            minHeight: isMobile ? 'auto' : '100vh',
             position: 'relative',
             overflow: 'hidden',
             width: '100%',
@@ -59,18 +60,18 @@ const FinalDownload = () => {
         }}>
             <div className="dot-background" />
 
-            {/* Interactive particle canvas — same as Hero section */}
             <InteractiveCanvas />
 
-            <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(24px, 5vw, 48px)' }}>
+            <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', padding: isMobile ? '0 20px' : '0 48px' }}>
                 <h2 style={{
-                    fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+                    fontSize: isMobile ? '2.25rem' : 'clamp(2rem, 4vw, 3.2rem)',
                     fontWeight: 400,
                     letterSpacing: '-0.02em',
-                    marginBottom: 'clamp(24px, 3vw, 40px)',
+                    marginBottom: '40px',
                     lineHeight: 1.3,
                     color: '#111',
-                    maxWidth: '500px'
+                    maxWidth: isMobile ? '100%' : '500px',
+                    textAlign: isMobile ? 'center' : 'left'
                 }}>
                     {isInView ? (
                         <Typewriter
@@ -82,22 +83,27 @@ const FinalDownload = () => {
                 </h2>
 
                 <motion.div
-                    className="flex-responsive-row"
                     initial={{ opacity: 0, y: 15 }}
                     animate={textDone ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
                     style={{
+                        display: 'flex',
+                        gap: isMobile ? '16px' : '24px',
+                        flexDirection: isMobile ? 'column' : 'row',
+                        alignItems: 'center',
+                        justifyContent: isMobile ? 'center' : 'flex-start',
+                        flexWrap: 'wrap',
                         opacity: textDone ? undefined : 0
                     }}
                 >
                     <motion.a
                         href="#"
-                        className="premium-glow-btn mobile-full-btn"
+                        className="premium-glow-btn"
                         whileHover={{ scale: 1.04 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        style={{ color: '#fff' }}
+                        style={{ color: '#fff', width: isMobile ? '100%' : 'auto' }}
                     >
-                        <div className="premium-glow-btn-inner mobile-full-btn" style={{ background: '#111', padding: '16px 36px', display: 'flex', justifyContent: 'center' }}>
+                        <div className="premium-glow-btn-inner" style={{ background: '#111', padding: '16px 36px', width: '100%' }}>
                             <Monitor size={18} />
                             <span>Download for Windows</span>
                         </div>
@@ -105,12 +111,12 @@ const FinalDownload = () => {
 
                     <motion.a
                         href="#"
-                        className="premium-glow-btn mobile-full-btn"
+                        className="premium-glow-btn"
                         whileHover={{ scale: 1.04 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        style={{ color: '#111' }}
+                        style={{ color: '#111', width: isMobile ? '100%' : 'auto' }}
                     >
-                        <div className="premium-glow-btn-inner mobile-full-btn" style={{ background: '#fff', padding: '16px 36px', border: '1px solid rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'center' }}>
+                        <div className="premium-glow-btn-inner" style={{ background: '#fff', padding: '16px 36px', border: '1px solid rgba(0,0,0,0.1)', width: '100%' }}>
                             <Apple size={18} />
                             <span>Download for Mac</span>
                         </div>

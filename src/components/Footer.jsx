@@ -2,9 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const Footer = () => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     return (
         <footer style={{
-            padding: 'clamp(60px, 8vw, 100px) clamp(24px, 4vw, 40px) clamp(32px, 4vw, 40px)',
+            padding: isMobile ? '60px 20px 40px' : '100px 40px 40px 40px',
             background: 'transparent',
             position: 'relative',
             borderTop: '1px solid rgba(0,0,0,0.04)',
@@ -18,13 +20,14 @@ const Footer = () => {
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 style={{
                     display: 'flex',
+                    flexDirection: isMobile ? 'column' : 'row',
                     justifyContent: 'space-between',
                     alignItems: 'flex-start',
                     borderBottom: '1px solid rgba(0,0,0,0.06)',
-                    paddingBottom: '80px',
+                    paddingBottom: isMobile ? '40px' : '80px',
                     marginBottom: '40px',
                     flexWrap: 'wrap',
-                    gap: '60px',
+                    gap: isMobile ? '40px' : '60px',
                     position: 'relative',
                     zIndex: 1
                 }}
@@ -34,10 +37,10 @@ const Footer = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: '-40px' }}
                     transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ flex: '1 1 300px' }}
+                    style={{ flex: isMobile ? '1 1 100%' : '1 1 300px', textAlign: isMobile ? 'center' : 'left' }}
                 >
                     <h4 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '20px', color: '#111', letterSpacing: '-0.02em' }}>Contact Us</h4>
-                    <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '300px', fontSize: '1.125rem' }}>
+                    <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: isMobile ? '100%' : '300px', fontSize: '1.125rem' }}>
                         Have questions about enterprise plans or custom deployments? Reach out to our specialized support team.
                     </p>
                     <a href="#" style={{ color: '#111', textDecoration: 'none', marginTop: '24px', display: 'inline-block', fontWeight: 500 }}>
@@ -50,12 +53,12 @@ const Footer = () => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: false, margin: '-40px' }}
                     transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ flex: '1 1 auto', textAlign: 'center' }}
+                    style={{ flex: '1 1 auto', textAlign: isMobile ? 'center' : 'right', width: isMobile ? '100%' : 'auto' }}
                 >
                     <h1 style={{
-                        fontSize: 'clamp(4rem, 12vw, 10rem)',
+                        fontSize: isMobile ? 'clamp(3rem, 15vw, 6rem)' : 'clamp(4rem, 12vw, 10rem)',
                         fontWeight: 800,
-                        letterSpacing: '0.3em',
+                        letterSpacing: isMobile ? '0.15em' : '0.3em',
                         opacity: 0.1,
                         color: '#9d00ffff',
                         userSelect: 'none',
@@ -67,19 +70,21 @@ const Footer = () => {
             </motion.div>
 
             <motion.div
-                className="flex-responsive-row"
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, margin: '-20px' }}
                 transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: 'clamp(0px, 2vw, 16px)',
-                    color: 'var(--text-secondary)',
-                    fontSize: '0.875rem',
-                    position: 'relative',
-                    zIndex: 1
+                style={{ 
+                    display: 'flex', 
+                    flexDirection: isMobile ? 'column' : 'row', 
+                    justifyContent: 'space-between', 
+                    alignItems: isMobile ? 'center' : 'flex-start',
+                    gap: isMobile ? '12px' : '0',
+                    color: 'var(--text-secondary)', 
+                    fontSize: '0.875rem', 
+                    position: 'relative', 
+                    zIndex: 1,
+                    textAlign: isMobile ? 'center' : 'left'
                 }}
             >
                 <span>Workspace Monitoring Solution</span>

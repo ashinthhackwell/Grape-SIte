@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import {
     LayoutDashboard, Users, FileText, Settings, Activity, ShieldAlert, Clock,
     Monitor, Lock, Eye, Database, Globe, Cpu, Server, Fingerprint, Shield,
@@ -8,105 +8,9 @@ import {
 
 const DemoSection = () => {
     const containerRef = useRef(null);
-    const innerDivRef = useRef(null);
+    const inView = useInView(containerRef, { once: false, amount: 0.3 });
 
-    useEffect(() => {
-        if (!containerRef.current || !innerDivRef.current) return;
-        const observer = new ResizeObserver((entries) => {
-            const entry = entries[0];
-            if (entry) {
-                const width = entry.contentRect.width;
-                const scale = width / 1000;
-                // Apply scale directly to DOM to avoid React re-renders and scroll lag!
-                innerDivRef.current.style.transform = `scale(${scale})`;
-            }
-        });
-        observer.observe(containerRef.current);
-        return () => observer.disconnect();
-    }, []);
-
-    // Scroll-driven animation tracking the stable container
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start end", "center center"]
-    });
-
-    // Smooth out the scroll progress
-    const smoothProgress = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
-        restDelta: 0.001
-    });
-
-    // Transform values synchronized perfectly to scroll
-    const containerOpacity = useTransform(smoothProgress, [0, 1], [0, 1]);
-    const containerY = useTransform(smoothProgress, [0, 1], [80, 0]);
-    const containerScale = useTransform(smoothProgress, [0, 1], [0.95, 1]);
-
-    // Title Transform
-    const titleOpacity = useTransform(smoothProgress, [0.1, 0.4], [0, 1]);
-    const titleY = useTransform(smoothProgress, [0.1, 0.4], [10, 0]);
-
-    // Sidebar Items Transforms
-    const sidebarOps = [
-        useTransform(smoothProgress, [0.1, 0.4], [0, 1]),
-        useTransform(smoothProgress, [0.15, 0.45], [0, 1]),
-        useTransform(smoothProgress, [0.2, 0.5], [0, 1]),
-        useTransform(smoothProgress, [0.25, 0.55], [0, 1]),
-        useTransform(smoothProgress, [0.3, 0.6], [0, 1]),
-    ];
-    const sidebarXs = [
-        useTransform(smoothProgress, [0.1, 0.4], [-10, 0]),
-        useTransform(smoothProgress, [0.15, 0.45], [-10, 0]),
-        useTransform(smoothProgress, [0.2, 0.5], [-10, 0]),
-        useTransform(smoothProgress, [0.25, 0.55], [-10, 0]),
-        useTransform(smoothProgress, [0.3, 0.6], [-10, 0]),
-    ];
-
-    // Card Items Transforms
-    const cardOps = [
-        useTransform(smoothProgress, [0.2, 0.5], [0, 1]),
-        useTransform(smoothProgress, [0.25, 0.55], [0, 1]),
-        useTransform(smoothProgress, [0.3, 0.6], [0, 1]),
-        useTransform(smoothProgress, [0.35, 0.65], [0, 1]),
-    ];
-    const cardYs = [
-        useTransform(smoothProgress, [0.2, 0.5], [20, 0]),
-        useTransform(smoothProgress, [0.25, 0.55], [20, 0]),
-        useTransform(smoothProgress, [0.3, 0.6], [20, 0]),
-        useTransform(smoothProgress, [0.35, 0.65], [20, 0]),
-    ];
-
-    // Table Container Transforms
-    const tableOpacity = useTransform(smoothProgress, [0.4, 0.7], [0, 1]);
-    const tableY = useTransform(smoothProgress, [0.4, 0.7], [20, 0]);
-
-    // Active Sessions Rows Transforms
-    const rowOps = [
-        useTransform(smoothProgress, [0.45, 0.75], [0, 1]),
-        useTransform(smoothProgress, [0.5, 0.8], [0, 1]),
-        useTransform(smoothProgress, [0.55, 0.85], [0, 1]),
-        useTransform(smoothProgress, [0.6, 0.9], [0, 1]),
-    ];
-    const rowXs = [
-        useTransform(smoothProgress, [0.45, 0.75], [-10, 0]),
-        useTransform(smoothProgress, [0.5, 0.8], [-10, 0]),
-        useTransform(smoothProgress, [0.55, 0.85], [-10, 0]),
-        useTransform(smoothProgress, [0.6, 0.9], [-10, 0]),
-    ];
-
-    // Chart Container Transforms
-    const chartOpacity = useTransform(smoothProgress, [0.5, 0.8], [0, 1]);
-    const chartY = useTransform(smoothProgress, [0.5, 0.8], [20, 0]);
-
-    // Chart Elements Transforms
-    const chartPathLength = useTransform(smoothProgress, [0.6, 0.9], [0, 1]);
-    const chartDotScales = [
-        useTransform(smoothProgress, [0.7, 0.9], [0, 1]),
-        useTransform(smoothProgress, [0.75, 0.95], [0, 1]),
-        useTransform(smoothProgress, [0.8, 1.0], [0, 1]),
-        useTransform(smoothProgress, [0.85, 1.0], [0, 1]),
-    ];
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
     // Mock data based on the real AdminDashboard
     const metrics = [
@@ -150,32 +54,35 @@ const DemoSection = () => {
     ];
 
     return (
-        <section className="section-wrapper demo-section-padding" style={{ position: 'relative', background: 'transparent' }}>
-            {/* Stable tracker for inView that does not animate its transform/scale */}
-            <div ref={containerRef} className="demo-dashboard-tracker max-container" style={{ width: '100%', maxWidth: '1000px', aspectRatio: '16/9', margin: '0 auto' }}>
-                <motion.div
-                    style={{
-                        opacity: containerOpacity,
-                        y: containerY,
-                        scale: containerScale,
-                        width: '100%',
-                        height: '100%',
-                        borderRadius: '16px',
-                        background: '#f9fafb',
-                        border: '1px solid rgba(0,0,0,0.1)',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        boxShadow: '0 40px 80px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)'
-                    }}
-                >
-                    <div ref={innerDivRef} style={{
-                        width: '1000px',
-                        height: '562.5px', // 16:9 ratio of 1000
-                        transformOrigin: 'top left',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        background: '#f9fafb',
-                    }}>
+        <section style={{ 
+            padding: isMobile ? '60px 20px 160px 20px' : '80px 24px 280px 24px', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            gap: isMobile ? '40px' : '80px', 
+            position: 'relative', 
+            background: 'transparent' 
+        }}>
+            <motion.div
+                ref={containerRef}
+                initial={{ opacity: 0, y: 80, scale: 0.95 }}
+                animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 80, scale: 0.95 }}
+                transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+                style={{
+                    width: '100%',
+                    maxWidth: '1200px',
+                    aspectRatio: isMobile ? 'auto' : '16/9',
+                    minHeight: isMobile ? '500px' : 'auto',
+                    borderRadius: '16px',
+                    background: '#f9fafb',
+                    border: '1px solid rgba(0,0,0,0.1)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    boxShadow: '0 40px 80px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)'
+                }}
+            >
                 {/* Mac-like Window Header (Light Mode) */}
                 <div style={{
                     height: '40px',
@@ -195,57 +102,68 @@ const DemoSection = () => {
                     <div style={{ flex: 1 }} />
                 </div>
 
-                <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+                <div style={{ flex: 1, display: 'flex', overflow: 'hidden', flexDirection: isMobile ? 'column' : 'row' }}>
 
-                    {/* Sidebar — always visible because we scale the view! */}
-                    <div style={{ width: '240px', borderRight: '1px solid #e5e7eb', background: '#ffffff', padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '24px', flexShrink: 0 }}>
-                        <div>
-                            <h2 style={{ fontSize: '14px', fontWeight: 600, color: '#111827', marginBottom: '16px', paddingLeft: '8px' }}>Admin Workspace</h2>
-                            <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                {navItems.map((item, i) => (
-                                    <motion.div
-                                        key={i}
-                                        style={{
-                                            opacity: sidebarOps[i],
-                                            x: sidebarXs[i],
-                                            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                            padding: '8px 12px', borderRadius: '6px',
-                                            background: item.active ? '#f3f4f6' : 'transparent',
-                                            color: item.active ? '#111827' : '#4b5563',
-                                            fontWeight: item.active ? 600 : 500,
-                                            fontSize: '14px', cursor: 'pointer'
-                                        }}
-                                    >
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            {item.icon}
-                                            {item.name}
-                                        </div>
-                                        {item.badge && (
-                                            <span style={{ background: '#ef4444', color: '#fff', fontSize: '11px', padding: '2px 6px', borderRadius: '99px', fontWeight: 600 }}>{item.badge}</span>
-                                        )}
-                                    </motion.div>
-                                ))}
-                            </nav>
+                    {/* Sidebar - Hidden on extreme mobile */}
+                    {!isMobile && (
+                        <div style={{ width: '240px', borderRight: '1px solid #e5e7eb', background: '#ffffff', padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                            <div>
+                                <h2 style={{ fontSize: '14px', fontWeight: 600, color: '#111827', marginBottom: '16px', paddingLeft: '8px' }}>Admin Workspace</h2>
+                                <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                    {navItems.map((item, i) => (
+                                        <motion.div
+                                            key={i}
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+                                            transition={{ duration: 0.4, delay: 0.2 + (i * 0.05), ease: "easeOut" }}
+                                            style={{
+                                                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                                                padding: '8px 12px', borderRadius: '6px',
+                                                background: item.active ? '#f3f4f6' : 'transparent',
+                                                color: item.active ? '#111827' : '#4b5563',
+                                                fontWeight: item.active ? 600 : 500,
+                                                fontSize: '14px', cursor: 'pointer'
+                                            }}
+                                        >
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                {item.icon}
+                                                {item.name}
+                                            </div>
+                                            {item.badge && (
+                                                <span style={{ background: '#ef4444', color: '#fff', fontSize: '11px', padding: '2px 6px', borderRadius: '99px', fontWeight: 600 }}>{item.badge}</span>
+                                            )}
+                                        </motion.div>
+                                    ))}
+                                </nav>
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Main Content */}
-                    <div style={{ flex: 1, padding: '32px', overflowY: 'hidden', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    <div style={{ flex: 1, padding: isMobile ? '20px' : '32px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <motion.h1 style={{ opacity: titleOpacity, y: titleY, fontWeight: 600, color: '#111827', fontSize: '24px' }}>
+                            <motion.h1
+                                initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }} transition={{ delay: 0.2 }}
+                                style={{ fontSize: isMobile ? '20px' : '24px', fontWeight: 600, color: '#111827' }}
+                            >
                                 Dashboard Overview
                             </motion.h1>
                         </div>
 
                         {/* Summary Cards */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+                        <div style={{ 
+                            display: 'grid', 
+                            gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)', 
+                            gap: '16px' 
+                        }}>
                             {metrics.map((metric, i) => (
                                 <motion.div
                                     key={i}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                                    transition={{ duration: 0.6, delay: 0.4 + (i * 0.1), ease: [0.16, 1, 0.3, 1] }}
                                     style={{
-                                        opacity: cardOps[i],
-                                        y: cardYs[i],
                                         background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '12px', padding: '20px',
                                         display: 'flex', flexDirection: 'column', gap: '8px',
                                         boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
@@ -264,16 +182,21 @@ const DemoSection = () => {
                         </div>
 
                         {/* Middle Row: Table & Chart */}
-                        <div style={{ display: 'flex', flex: 1, gap: '16px', alignItems: 'stretch' }}>
+                        <div style={{ 
+                            display: 'flex', 
+                            flexDirection: isMobile ? 'column' : 'row', 
+                            gap: '24px', 
+                            flex: 1 
+                        }}>
 
                             {/* Live Active Sessions Table */}
                             <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                                transition={{ duration: 0.6, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
                                 style={{
-                                    flex: 2,
-                                    opacity: tableOpacity,
-                                    y: tableY,
+                                    flex: isMobile ? 'none' : '2',
                                     background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden',
-                                    overflowX: 'auto',
                                     display: 'flex', flexDirection: 'column',
                                     boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                                 }}
@@ -281,41 +204,47 @@ const DemoSection = () => {
                                 <div style={{ padding: '16px 20px', borderBottom: '1px solid #e5e7eb' }}>
                                     <h2 style={{ fontSize: '15px', fontWeight: 600, color: '#111827' }}>Active Sessions — Live Status</h2>
                                 </div>
-                                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13px', flex: 1, minWidth: '400px' }}>
-                                    <thead>
-                                        <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb', color: '#6b7280' }}>
-                                            <th style={{ padding: '12px 20px', fontWeight: 500 }}>User</th>
-                                            <th style={{ padding: '12px 20px', fontWeight: 500 }}>Config</th>
-                                            <th style={{ padding: '12px 20px', fontWeight: 500 }}>Status</th>
-                                            <th style={{ padding: '12px 20px', fontWeight: 500 }}>Last Seen</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {activeSessions.map((session, i) => (
-                                            <motion.tr
-                                                key={i}
-                                                style={{ opacity: rowOps[i], x: rowXs[i], borderBottom: i === activeSessions.length - 1 ? 'none' : '1px solid #e5e7eb' }}
-                                            >
-                                                <td style={{ padding: '12px 20px', fontWeight: 500, color: '#111827' }}>{session.user}</td>
-                                                <td style={{ padding: '12px 20px', color: '#6b7280' }}>{session.config}</td>
-                                                <td style={{ padding: '12px 20px' }}>
-                                                    <span style={{ padding: '2px 8px', borderRadius: '4px', fontWeight: 500, fontSize: '12px', background: session.status === 'Online' ? '#d1fae5' : session.status === 'Idle' ? '#fef3c7' : '#fee2e2', color: session.status === 'Online' ? '#047857' : session.status === 'Idle' ? '#b45309' : '#b91c1c' }}>
-                                                        {session.status}
-                                                    </span>
-                                                </td>
-                                                <td style={{ padding: '12px 20px', color: '#6b7280' }}>{session.time}</td>
-                                            </motion.tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                <div style={{ overflowX: 'auto' }}>
+                                    <table style={{ width: '100%', minWidth: '400px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13px', flex: 1 }}>
+                                        <thead>
+                                            <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb', color: '#6b7280' }}>
+                                                <th style={{ padding: '12px 20px', fontWeight: 500 }}>User</th>
+                                                {!isMobile && <th style={{ padding: '12px 20px', fontWeight: 500 }}>Config</th>}
+                                                <th style={{ padding: '12px 20px', fontWeight: 500 }}>Status</th>
+                                                <th style={{ padding: '12px 20px', fontWeight: 500 }}>Last Seen</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {activeSessions.map((session, i) => (
+                                                <motion.tr
+                                                    key={i}
+                                                    initial={{ opacity: 0, x: -10 }}
+                                                    animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+                                                    transition={{ delay: 0.8 + (i * 0.1) }}
+                                                    style={{ borderBottom: i === activeSessions.length - 1 ? 'none' : '1px solid #e5e7eb' }}
+                                                >
+                                                    <td style={{ padding: '12px 20px', fontWeight: 500, color: '#111827' }}>{session.user}</td>
+                                                    {!isMobile && <td style={{ padding: '12px 20px', color: '#6b7280' }}>{session.config}</td>}
+                                                    <td style={{ padding: '12px 20px' }}>
+                                                        <span className={session.color} style={{ padding: '2px 8px', borderRadius: '4px', fontWeight: 500, fontSize: '12px' }}>
+                                                            {session.status}
+                                                        </span>
+                                                    </td>
+                                                    <td style={{ padding: '12px 20px', color: '#6b7280' }}>{session.time}</td>
+                                                </motion.tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </motion.div>
 
                             {/* Daily Hours Chart Graphic */}
                             <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                                transition={{ duration: 0.6, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
                                 style={{
-                                    flex: 1,
-                                    opacity: chartOpacity,
-                                    y: chartY,
+                                    flex: isMobile ? 'none' : '1',
                                     background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '12px', padding: '20px',
                                     display: 'flex', flexDirection: 'column', gap: '16px',
                                     boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
@@ -337,12 +266,16 @@ const DemoSection = () => {
                                             </linearGradient>
                                         </defs>
                                         <motion.path
-                                            style={{ pathLength: chartPathLength, opacity: chartPathLength }}
+                                            initial={{ pathLength: 0, opacity: 0 }}
+                                            animate={inView ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+                                            transition={{ duration: 1.5, ease: "easeOut", delay: 1.2 }}
                                             d="M0,140 C50,140 100,50 150,80 C200,110 250,40 300,70 C350,100 380,30 400,30 L400,180 L0,180 Z"
                                             fill="url(#blueArea)"
                                         />
                                         <motion.path
-                                            style={{ pathLength: chartPathLength }}
+                                            initial={{ pathLength: 0 }}
+                                            animate={inView ? { pathLength: 1 } : { pathLength: 0 }}
+                                            transition={{ duration: 1.5, ease: "easeOut", delay: 1.2 }}
                                             d="M0,140 C50,140 100,50 150,80 C200,110 250,40 300,70 C350,100 380,30 400,30"
                                             fill="none"
                                             stroke="#3b82f6"
@@ -354,7 +287,9 @@ const DemoSection = () => {
                                             <motion.circle
                                                 key={i}
                                                 cx={pt[0]} cy={pt[1]} r="4"
-                                                style={{ scale: chartDotScales[i] }}
+                                                initial={{ scale: 0 }}
+                                                animate={inView ? { scale: 1 } : { scale: 0 }}
+                                                transition={{ duration: 0.4, delay: 1.5 + (i * 0.1), type: 'spring' }}
                                                 fill="#ffffff" stroke="#3b82f6" strokeWidth="2"
                                             />
                                         ))}
@@ -365,23 +300,22 @@ const DemoSection = () => {
                         </div>
                     </div>
                 </div>
-                    </div>
             </motion.div>
-            </div>
 
             {/* Glowing Icon Marquee Background Strip */}
             <div style={{
                 position: 'absolute',
-                bottom: '-24px',
+                bottom: '-24px', // Tucked right underneath
                 left: 0,
                 right: 0,
-                height: 'clamp(140px, 15vw, 240px)',
+                height: '240px', // Increased marquee section size
                 overflow: 'hidden',
                 display: 'flex',
                 alignItems: 'center',
+                // Keep the smooth edge fade
                 maskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)',
                 WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)',
-                zIndex: 1
+                zIndex: 1 // Explicitly put behind the dashboard mockup
             }}>
                 <motion.div
                     animate={{
@@ -402,8 +336,8 @@ const DemoSection = () => {
                     }}
                     style={{
                         display: 'flex',
-                        gap: 'clamp(20px, 3vw, 40px)',
-                        paddingRight: 'clamp(20px, 3vw, 40px)',
+                        gap: '40px', // Reduced spacing to fit more icons together beautifully
+                        paddingRight: '40px', // ensure seamless loop
                         width: 'max-content'
                     }}
                 >
@@ -440,8 +374,8 @@ const DemoSection = () => {
                                 }}
                                 transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                                 style={{
-                                    width: 'clamp(50px, 6vw, 80px)',
-                                    height: 'clamp(50px, 6vw, 80px)',
+                                    width: '80px',  // Decreased icon container size
+                                    height: '80px', // Decreased icon container size
                                     borderRadius: '50%',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -451,7 +385,7 @@ const DemoSection = () => {
                                     willChange: 'transform, color, box-shadow'
                                 }}
                             >
-                                <Icon style={{ width: 'clamp(18px, 2vw, 24px)', height: 'clamp(18px, 2vw, 24px)' }} strokeWidth={1.5} />
+                                <Icon size={24} strokeWidth={1.5} /> {/* Decreased icon size */}
                             </motion.div>
                         );
                     })}

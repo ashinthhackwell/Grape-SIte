@@ -65,10 +65,6 @@ const Founders = () => {
     const scrollTimeout = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isHoveringImage, setIsHoveringImage] = useState(false);
-    
-    // Base padding-left scales down on mobile purely through CSS calculations where used.
-    // Instead of a strict JS number, we'll map the inline styles to clamp.
-    const pLeftCSS = 'clamp(24px, 6vw, 100px)';
 
     // Smooth cursor globally tracking viewport mouse
     const mouseX = useMotionValue(0);
@@ -105,13 +101,14 @@ const Founders = () => {
         if (!scrollRef.current) return;
         const targetChild = scrollRef.current.children[index];
         if (targetChild) {
+            // Lock passive scrolling so intermediate positions don't overwrite the state
             isScrollingProgrammatically.current = true;
             setCurrentIndex(index);
 
-            // Get actual computed padding dynamically instead of relying on JS state
-            const computedPaddingStr = window.getComputedStyle(scrollRef.current).paddingLeft;
-            const computedPadding = parseInt(computedPaddingStr) || 100;
-            const requiredScroll = targetChild.offsetLeft - computedPadding;
+            // Scroll explicitly so the target card is positioned exactly 100px from the left screen edge
+            // This aligns it perfectly above the static text block.
+            // The scroll container native snap will handle the micro-adjustments
+            const requiredScroll = targetChild.offsetLeft - 100;
 
             scrollRef.current.scrollTo({
                 left: requiredScroll,
@@ -133,30 +130,34 @@ const Founders = () => {
 
     const activeFounder = foundersData[currentIndex];
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     return (
         <section
-            style={{ padding: '60px 0 100px 0', position: 'relative', overflow: 'hidden' }}
+            style={{ padding: isMobile ? '40px 0 60px 0' : '60px 0 100px 0', position: 'relative', overflow: 'hidden' }}
             onMouseMove={handleMouseMoveGlobal}
         >
-            {/* Custom Mouse Cursor overlay */}
-            <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: isHoveringImage ? 1 : 0, scale: isHoveringImage ? 1 : 0.5 }}
-                transition={{ duration: 0.2 }}
-                style={{
-                    position: 'fixed',
-                    top: 0, left: 0,
-                    x: cursorX, y: cursorY,
-                    translateX: '-50%', translateY: '-50%', // Centering right on the mouse tip
-                    pointerEvents: 'none',
-                    zIndex: 9999
-                }}
-            >
-                <div style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(8px)', borderRadius: '999px', padding: '12px 24px', display: 'flex', gap: '8px', alignItems: 'center', boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}>
-                    <Play size={14} fill="#111" color="#111" />
-                    <span style={{ fontWeight: 500, color: '#111', fontSize: '1rem', whiteSpace: 'nowrap' }}>Play snippet</span>
-                </div>
-            </motion.div>
+            {/* Custom Mouse Cursor overlay - Disabled on Mobile */}
+            {!isMobile && (
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: isHoveringImage ? 1 : 0, scale: isHoveringImage ? 1 : 0.5 }}
+                    transition={{ duration: 0.2 }}
+                    style={{
+                        position: 'fixed',
+                        top: 0, left: 0,
+                        x: cursorX, y: cursorY,
+                        translateX: '-50%', translateY: '-50%', // Centering right on the mouse tip
+                        pointerEvents: 'none',
+                        zIndex: 9999
+                    }}
+                >
+                    <div style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(8px)', borderRadius: '999px', padding: '12px 24px', display: 'flex', gap: '8px', alignItems: 'center', boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}>
+                        <Play size={14} fill="#111" color="#111" />
+                        <span style={{ fontWeight: 500, color: '#111', fontSize: '1rem', whiteSpace: 'nowrap' }}>Play snippet</span>
+                    </div>
+                </motion.div>
+            )}
 
             {/* CSS to hide scrollbar */}
             <style dangerouslySetInnerHTML={{
@@ -180,12 +181,12 @@ const Founders = () => {
                         className="hide-scroll"
                         style={{
                             display: 'flex',
-                            gap: 'clamp(16px, 3vw, 32px)',
+                            gap: isMobile ? '16px' : '32px',
                             overflowX: 'auto',
                             paddingBottom: '32px',
                             scrollSnapType: 'x mandatory',
-                            paddingLeft: pLeftCSS,
-                            paddingRight: '100vw'
+                            paddingLeft: isMobile ? '20px' : '100px',
+                            paddingRight: isMobile ? '20px' : '100vw'
                         }}
                     >
                         {foundersData.map((founder, idx) => {
@@ -194,9 +195,9 @@ const Founders = () => {
                                 <div
                                     key={idx}
                                     style={{
-                                        flex: '0 0 clamp(280px, 80vw, 800px)',
+                                        flex: isMobile ? '0 0 calc(100vw - 40px)' : '0 0 min(75vw, 800px)',
                                         scrollSnapAlign: 'start',
-                                        scrollMarginLeft: pLeftCSS
+                                        scrollMarginLeft: isMobile ? '20px' : '100px'
                                     }}
                                 >
                                     {/* The Image Box */}
@@ -209,15 +210,15 @@ const Founders = () => {
                                         style={{
                                             position: 'relative',
                                             width: '100%',
-                                            aspectRatio: '16/9',
+                                            aspectRatio: isMobile ? '4/5' : '16/9',
                                             maxHeight: '480px',
-                                            borderRadius: '32px',
+                                            borderRadius: isMobile ? '24px' : '32px',
                                             overflow: 'hidden',
                                             backgroundColor: '#e5e7eb',
-                                            cursor: 'none' // Hide native cursor when inside
+                                            cursor: isMobile ? 'pointer' : 'none'
                                         }}
-                                        onMouseEnter={() => setIsHoveringImage(true)}
-                                        onMouseLeave={() => setIsHoveringImage(false)}
+                                        onMouseEnter={() => !isMobile && setIsHoveringImage(true)}
+                                        onMouseLeave={() => !isMobile && setIsHoveringImage(false)}
                                     >
                                         <motion.div
                                             whileHover={{ scale: 1.02 }}
@@ -235,12 +236,12 @@ const Founders = () => {
                                         {/* Overlaid Animated Role Text */}
                                         <div style={{
                                             position: 'absolute',
-                                            bottom: 'clamp(24px, 4vw, 48px)',
-                                            left: 'clamp(24px, 4vw, 48px)',
-                                            height: 'clamp(80px, 8vw, 100px)', // Adjusted for smaller text
+                                            bottom: isMobile ? '24px' : '48px',
+                                            left: isMobile ? '24px' : '48px',
+                                            height: isMobile ? '80px' : '100px',
                                             color: '#ffffff',
-                                            fontSize: 'clamp(1.5rem, 4vw, 2.75rem)',
-                                            fontWeight: 400, // Reduced from 600 for a much thinner, elegant look
+                                            fontSize: isMobile ? '1.75rem' : 'clamp(1.75rem, 4vw, 2.75rem)',
+                                            fontWeight: 400,
                                             lineHeight: 1.1,
                                             letterSpacing: '-0.04em',
                                             whiteSpace: 'pre-line',
@@ -266,17 +267,20 @@ const Founders = () => {
                         })}
                     </div>
 
+                    {/* Below Card Content row */}
                     <div
-                        className="flex-responsive-row"
                         style={{
                             width: '100%',
-                            paddingLeft: pLeftCSS,
-                            paddingRight: `max(${pLeftCSS}, calc(50% - 626px))`,
+                            paddingLeft: isMobile ? '20px' : '100px',
+                            paddingRight: isMobile ? '20px' : 'max(24px, calc(50% - 626px))',
+                            display: 'flex',
+                            flexDirection: isMobile ? 'column' : 'row',
                             justifyContent: 'space-between',
-                            alignItems: 'flex-start'
+                            alignItems: isMobile ? 'center' : 'flex-start',
+                            gap: isMobile ? '24px' : '0'
                         }}
                     >
-                        <div style={{ maxWidth: '600px', position: 'relative' }}>
+                        <div style={{ maxWidth: '600px', position: 'relative', textAlign: isMobile ? 'center' : 'left' }}>
                             <AnimatePresence mode="popLayout" initial={false}>
                                 <motion.div
                                     key={currentIndex}
@@ -285,10 +289,10 @@ const Founders = () => {
                                     exit={{ opacity: 0, y: -15, filter: 'blur(8px)' }}
                                     transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                                 >
-                                    <h4 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#111827', marginBottom: '8px' }}>
+                                    <h4 style={{ fontSize: isMobile ? '1.1rem' : '1.25rem', fontWeight: 600, color: '#111827', marginBottom: '8px' }}>
                                         {activeFounder.title}
                                     </h4>
-                                    <p style={{ color: '#4b5563', fontSize: '1rem', lineHeight: 1.5, margin: 0 }}>
+                                    <p style={{ color: '#4b5563', fontSize: isMobile ? '0.9rem' : '1rem', lineHeight: 1.5, margin: 0 }}>
                                         {activeFounder.description}
                                     </p>
                                 </motion.div>

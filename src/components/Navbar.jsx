@@ -13,12 +13,12 @@ const Navbar = () => {
             setScrolled(currentScrollY > 20);
         };
         window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // For simplicity, we'll keep the navbar visible always, but with dynamic background
     const isVisible = true;
+
 
     return (
         <motion.nav
@@ -36,11 +36,11 @@ const Navbar = () => {
                 top: 0,
                 left: 0,
                 right: 0,
-                height: 'clamp(60px, 8vw, 76px)',
+                height: '72px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '0 clamp(16px, 4vw, 40px)',
+                padding: '0 var(--section-padding-x)',
                 zIndex: 100,
                 transition: 'all 0.4s ease',
                 background: scrolled ? 'rgba(255, 255, 255, 0.6)' : 'transparent',
@@ -51,23 +51,23 @@ const Navbar = () => {
         >
             {/* Logo area */}
             <Link to="/" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer', textDecoration: 'none' }}>
-                <img src="/grape-logo.png" alt="Grape" style={{ width: 'clamp(30px, 4vw, 36px)', height: 'clamp(30px, 4vw, 36px)', borderRadius: '6px', objectFit: 'contain' }} />
-                <span style={{ fontSize: 'clamp(16px, 2vw, 18px)', fontWeight: 600, letterSpacing: '-0.02em', color: '#111' }}>
+                <img src="/grape-logo.png" alt="Grape" style={{ width: '32px', height: '32px', borderRadius: '6px', objectFit: 'contain' }} />
+                <span style={{ fontSize: '18px', fontWeight: 600, letterSpacing: '-0.02em', color: '#111' }}>
                     Grape
                 </span>
             </Link>
 
             {/* Right Actions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 1.5vw, 12px)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 2vw, 12px)' }}>
                 <Link to="/help" className="premium-glow-btn" style={{
                     color: '#4b5563',
                     textDecoration: 'none',
                     fontWeight: 500,
-                    fontSize: 'clamp(13px, 1.5vw, 14px)',
+                    fontSize: '14px',
                     opacity: isHelpPage ? 0.5 : 1,
                     pointerEvents: isHelpPage ? 'none' : 'auto'
                 }}>
-                    <div className="premium-glow-btn-inner" style={{ background: '#f3f4f6', padding: 'clamp(8px, 1vw, 10px) clamp(16px, 2vw, 24px)' }}>
+                    <div className="premium-glow-btn-inner" style={{ background: '#f3f4f6', padding: '8px clamp(16px, 3vw, 24px)' }}>
                         <span>Help ?</span>
                     </div>
                 </Link>
@@ -76,9 +76,9 @@ const Navbar = () => {
                     color: '#fff',
                     textDecoration: 'none',
                     fontWeight: 500,
-                    fontSize: 'clamp(13px, 1.5vw, 14px)',
+                    fontSize: '14px',
                 }}>
-                    <div className="premium-glow-btn-inner" style={{ background: '#111', padding: 'clamp(8px, 1vw, 10px) clamp(16px, 2vw, 24px)' }}>
+                    <div className="premium-glow-btn-inner" style={{ background: '#111', padding: '8px clamp(16px, 3vw, 24px)' }}>
                         <span>Download</span>
                     </div>
                 </a>
