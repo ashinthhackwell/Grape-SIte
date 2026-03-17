@@ -10,29 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ✅ FIX 1: Updated checkout
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
+      # ✅ FIX 2: Updated node setup
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
+      # Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # Build Vite project
       - name: Build project
         run: npm run build
-
-      - name: Move dist to root
-        run: |
-          cp -r dist/* .
-          rm -rf dist
-
-      - name: Commit and push build
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add .
-          git commit -m "auto build deploy" || echo "No changes"
-          git push
