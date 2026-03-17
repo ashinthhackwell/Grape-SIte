@@ -3,9 +3,10 @@ import { motion, useInView, useAnimation } from 'framer-motion';
 import { Monitor, Apple, MousePointer2 } from 'lucide-react';
 
 const DownloadAgentAnimation = () => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, amount: 0.5 });
-    
+
     // Controls for complex sequencing
     const cursorControls = useAnimation();
     const windowButtonControls = useAnimation();
@@ -14,7 +15,7 @@ const DownloadAgentAnimation = () => {
 
     useEffect(() => {
         let isMounted = true;
-        
+
         if (isInView) {
             const runSequence = async () => {
                 while (isMounted) {
@@ -22,7 +23,7 @@ const DownloadAgentAnimation = () => {
                     cursorControls.set({ opacity: 0, x: 120, y: 120, scale: 1 });
                     rippleControls.set({ scale: 0, opacity: 0 });
                     windowButtonControls.set({ scale: 1, backgroundColor: "#111", boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" });
-                    
+
                     // Force content to be visible
                     await contentControls.start({
                         opacity: 1,
@@ -44,11 +45,11 @@ const DownloadAgentAnimation = () => {
 
                     // Cursor moves to Windows button - Precision Target
                     await cursorControls.start({
-                        x: -95, 
-                        y: 92,  
+                        x: isMobile ? 0 : -95,
+                        y: isMobile ? 20 : 62,
                         transition: { type: "spring", stiffness: 80, damping: 15, mass: 1 }
                     });
-                    
+
                     if (!isMounted) break;
 
                     // Hover effect
@@ -121,7 +122,7 @@ const DownloadAgentAnimation = () => {
         }
 
         return () => { isMounted = false; };
-    }, [isInView, contentControls, cursorControls, windowButtonControls, rippleControls]);
+    }, [isInView, contentControls, cursorControls, windowButtonControls, rippleControls, isMobile]);
 
     return (
         <div
@@ -176,12 +177,12 @@ const DownloadAgentAnimation = () => {
                 }}
             >
                 {/* Title & Subtitle */}
-                <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-                    <motion.h4 
-                        style={{ 
-                            fontSize: '4.5rem', 
-                            fontWeight: 800, 
-                            margin: 0, 
+                <div style={{ textAlign: 'center', marginBottom: isMobile ? '32px' : '48px' }}>
+                    <motion.h4
+                        style={{
+                            fontSize: isMobile ? '2.5rem' : '4.5rem',
+                            fontWeight: 800,
+                            margin: 0,
                             color: '#111',
                             letterSpacing: '-0.04em',
                             lineHeight: 1
@@ -189,10 +190,10 @@ const DownloadAgentAnimation = () => {
                     >
                         GRAPE
                     </motion.h4>
-                    <p style={{ 
-                        fontSize: '1.2rem', 
-                        color: '#64748b', 
-                        margin: '16px 0 0',
+                    <p style={{
+                        fontSize: isMobile ? '1rem' : '1.2rem',
+                        color: '#64748b',
+                        margin: isMobile ? '8px 0 0' : '16px 0 0',
                         fontWeight: 500
                     }}>
                         See what your team does :)
@@ -200,15 +201,25 @@ const DownloadAgentAnimation = () => {
                 </div>
 
                 {/* Buttons Area */}
-                <div style={{ display: 'flex', gap: '24px', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{
+                    display: 'flex',
+                    flexDirection: isMobile ? 'column' : 'row',
+                    gap: isMobile ? '12px' : '24px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    maxWidth: isMobile ? '240px' : 'none'
+                }}>
                     <motion.div
                         animate={windowButtonControls}
                         initial={{ scale: 1, backgroundColor: "#111" }}
                         style={{
                             background: '#111',
                             color: '#fff',
-                            padding: '16px 36px',
-                            borderRadius: '16px',
+                            padding: isMobile ? '12px 24px' : '16px 36px',
+                            borderRadius: isMobile ? '12px' : '16px',
+                            width: isMobile ? '100%' : 'auto',
+                            justifyContent: 'center',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '12px',
@@ -220,9 +231,9 @@ const DownloadAgentAnimation = () => {
                             willChange: "transform, box-shadow"
                         }}
                     >
-                        <Monitor size={22} strokeWidth={2.5} />
-                        <span>Windows</span>
-                        
+                        <Monitor size={isMobile ? 18 : 22} strokeWidth={2.5} />
+                        <span style={{ fontSize: isMobile ? '0.95rem' : '1.1rem' }}>Windows</span>
+
                         {/* Ripple Effect */}
                         <motion.div
                             animate={rippleControls}
@@ -246,8 +257,10 @@ const DownloadAgentAnimation = () => {
                     <div style={{
                         background: '#fff',
                         color: '#111',
-                        padding: '16px 32px',
-                        borderRadius: '16px',
+                        padding: isMobile ? '12px 24px' : '16px 32px',
+                        borderRadius: isMobile ? '12px' : '16px',
+                        width: isMobile ? '100%' : 'auto',
+                        justifyContent: 'center',
                         border: '1px solid #e2e8f0',
                         display: 'flex',
                         alignItems: 'center',
@@ -256,8 +269,8 @@ const DownloadAgentAnimation = () => {
                         fontWeight: 600,
                         boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
                     }}>
-                        <Apple size={22} strokeWidth={2.5} />
-                        <span>macOS</span>
+                        <Apple size={isMobile ? 18 : 22} strokeWidth={2.5} />
+                        <span style={{ fontSize: isMobile ? '0.95rem' : '1.1rem' }}>macOS</span>
                     </div>
                 </div>
             </motion.div>
@@ -278,14 +291,14 @@ const DownloadAgentAnimation = () => {
                 }}
             >
                 <div style={{ position: 'relative' }}>
-                    <svg 
-                        width="36" 
-                        height="36" 
-                        viewBox="0 0 24 24" 
-                        fill="white" 
-                        stroke="black" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
+                    <svg
+                        width="36"
+                        height="36"
+                        viewBox="0 0 24 24"
+                        fill="white"
+                        stroke="black"
+                        strokeWidth="2"
+                        strokeLinecap="round"
                         strokeLinejoin="round"
                         style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))' }}
                     >

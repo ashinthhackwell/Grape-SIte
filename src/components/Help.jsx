@@ -39,7 +39,7 @@ const StepSection = ({ step, title, description, isReversed, AnimationComponent 
                     Step {step}
                 </span>
                 <h3 style={{
-                    fontSize: isMobile ? '2rem' : '2.5rem',
+                    fontSize: isMobile ? '1.5rem' : '2.5rem',
                     fontWeight: 500,
                     color: '#111',
                     marginBottom: '24px',
@@ -51,7 +51,7 @@ const StepSection = ({ step, title, description, isReversed, AnimationComponent 
                     fontSize: isMobile ? '1rem' : '1.1rem',
                     color: '#666',
                     lineHeight: 1.6,
-                    maxWidth: '450px',
+                    maxWidth: isMobile ? '100%' : '450px',
                     margin: isMobile ? '0 auto' : '0'
                 }}>
                     {description}

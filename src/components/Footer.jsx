@@ -44,7 +44,7 @@ const Footer = () => {
                         Have questions about enterprise plans or custom deployments? Reach out to our specialized support team.
                     </p>
                     <a href="#" style={{ color: '#111', textDecoration: 'none', marginTop: '24px', display: 'inline-block', fontWeight: 500 }}>
-                        support@workspace.monitor
+                        support.grape@gmail.com
                     </a>
                 </motion.div>
 
@@ -87,7 +87,7 @@ const Footer = () => {
                     textAlign: isMobile ? 'center' : 'left'
                 }}
             >
-                <span>Workspace Monitoring Solution</span>
+                <span>Uprael</span>
                 <span>&copy; {new Date().getFullYear()} All rights reserved.</span>
             </motion.div>
         </footer>

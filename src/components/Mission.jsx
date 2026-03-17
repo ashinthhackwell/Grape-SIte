@@ -67,11 +67,12 @@ const Mission = () => {
                 textAlign: 'center'
             }}>
                 <p style={{
-                    fontSize: 'clamp(1.75rem, 3.5vw, 3rem)',
+                    fontSize: isMobile ? '1.15rem' : 'clamp(1.75rem, 3.5vw, 3rem)',
                     fontWeight: 400,
                     letterSpacing: '-0.02em',
                     lineHeight: 1.3,
-                    margin: 0
+                    margin: 0,
+                    whiteSpace: isMobile ? 'nowrap' : 'normal'
                 }}>
                     {chars.map((char, i) => (
                         <ScrollChar
@@ -85,12 +86,13 @@ const Mission = () => {
                 </p>
                 <motion.p style={{
                     display: "flex",
-                    alignItems: "right",
-                    justifyContent: "right",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
                     fontSize: 'clamp(1rem, 1.5vw, 1.3rem)',
                     fontWeight: 400,
                     color: '#9d00ff46',
                     marginTop: '24px',
+                    paddingRight: isMobile ? '25px' : '0',
                     letterSpacing: '0.02em',
                     opacity: attrOpacity,
                     y: attrY

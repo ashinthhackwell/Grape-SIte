@@ -4,20 +4,38 @@ import { useState, useEffect } from 'react';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
     const location = useLocation();
     const isHelpPage = location.pathname === '/help';
 
     useEffect(() => {
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
+            
+            // Background appearance logic
             setScrolled(currentScrollY > 20);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
-    // For simplicity, we'll keep the navbar visible always, but with dynamic background
-    const isVisible = true;
+            // Visibility logic
+            // 1. Always show at the very top
+            if (currentScrollY < 50) {
+                setIsVisible(true);
+            } 
+            // 2. If scrolling down and past the Hero section (approx 100vh)
+            else if (currentScrollY > lastScrollY && currentScrollY > 800) {
+                setIsVisible(false);
+            }
+            // 3. If scrolling up
+            else if (currentScrollY < lastScrollY) {
+                setIsVisible(true);
+            }
+
+            setLastScrollY(currentScrollY);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [lastScrollY]);
 
 
     return (

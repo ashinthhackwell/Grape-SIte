@@ -66,18 +66,6 @@ const OrganizationSize = () => {
                 borderTop: '1px solid rgba(0,0,0,0.04)'
             }}
         >
-            {/* Observer... skipped */}
-            <motion.div
-                onViewportEnter={() => {
-                    if (isMobile) return;
-                    const element = document.getElementById('organization-size-section');
-                    if (element) {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                }}
-                viewport={{ once: false, amount: 0.3 }}
-                style={{ position: 'absolute', top: '30%', left: 0, width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }}
-            />
 
             <GrapeParticles mousePos={mousePos} hoverState={hoverState} cardRects={cardRects} />
 

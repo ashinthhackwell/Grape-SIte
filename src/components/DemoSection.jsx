@@ -305,7 +305,7 @@ const DemoSection = () => {
             {/* Glowing Icon Marquee Background Strip */}
             <div style={{
                 position: 'absolute',
-                bottom: '-24px', // Tucked right underneath
+                bottom: isMobile ? '-70px' : '-24px', // Tucked right underneath
                 left: 0,
                 right: 0,
                 height: '240px', // Increased marquee section size

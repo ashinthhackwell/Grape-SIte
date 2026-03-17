@@ -4,15 +4,15 @@ import { Play, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const foundersData = [
     {
-        role: "Frontend\ndeveloper",
-        title: "Frontend developer",
-        description: "Streamline UX development by leveraging browser-in-browser observability, bridging the gap between design and production code instantly.",
+        role: "Founder",
+        title: "Founder",
+        description: "Great teams run on clarity. Not surveillance. Grape was built to give founders real insight into work — while protecting the privacy and trust every team deserves.",
         imageUrl: "/Grape-Founder.webp"
     },
     {
-        role: "Backend\narchitect",
-        title: "Backend architect",
-        description: "Sarah Chen architected the zero-latency telemetry engine that powers Workspace Monitoring's instant insights, ensuring massive scale without performance drops.",
+        role: "Co-Founder",
+        title: "Co-Founder",
+        description: "We built Grape to prove that productivity and privacy can coexist. Real-time insights, reliable tracking, and transparency—designed for the way modern teams work.",
         imageUrl: "/Grape-Co-Founder.webp"
     }
 ];

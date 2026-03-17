@@ -37,8 +37,8 @@ const BuiltFor = () => {
                     lineHeight: 1.1,
                     marginLeft: isMobile ? '0' : '-50px'
                 }}>
-                    Built for managers<br />
-                    in the real-time era
+                    Clarity, Transparency<br />
+                    Privacy Built In
                 </h2>
             </motion.div>
 
@@ -60,10 +60,11 @@ const BuiltFor = () => {
                     margin: 0,
                     fontWeight: 500
                 }}>
-                    Workspace Monitoring is engineered for total visibility, whether
-                    you're a security operations lead analyzing global threats, a
-                    system administrator balancing endpoints loads, or an executive commanding
-                    infrastructure health from a single pane of glass.
+                    Grape helps teams work better with real-time monitoring, offline tracking,
+                    and privacy-friendly insights. A lightweight desktop agent sends live activity
+                    data to the dashboard. If the internet stops, data is saved locally and synced
+                    later. Grape focuses on productivity insights while respecting employee privacy
+                    and building workplace trust
                 </p>
             </motion.div>
         </section>

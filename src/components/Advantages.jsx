@@ -120,9 +120,9 @@ const AdvantageRow = ({ title, description, reverse, id, isMobile }) => {
                         cursor: 'default'
                     }}
                 >
-                    {id === 1 && <TelemetryMockup />}
-                    {id === 2 && <CommandCenterMockup />}
-                    {id === 3 && <SecurityMockup />}
+                    {id === 1 && <TelemetryMockup isMobile={isMobile} />}
+                    {id === 2 && <CommandCenterMockup isMobile={isMobile} />}
+                    {id === 3 && <SecurityMockup isMobile={isMobile} />}
                 </motion.div>
             </motion.div>
         </div>
@@ -133,7 +133,7 @@ const AdvantageRow = ({ title, description, reverse, id, isMobile }) => {
 // Custom Workspace Monitoring Mockups
 // ----------------------------------------------------
 
-const TelemetryMockup = () => {
+const TelemetryMockup = ({ isMobile }) => {
     // Mimicking a real-time terminal/log feed of employee activity
     return (
         <div style={{ position: 'relative', width: '96%', height: '86%', translateZ: 30 }}>
@@ -180,7 +180,7 @@ const TelemetryMockup = () => {
     );
 };
 
-const CommandCenterMockup = () => {
+const CommandCenterMockup = ({ isMobile }) => {
     // Abstracted pill showing a unified command prompt or notification
     return (
         <div style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', translateZ: 40 }}>
@@ -208,7 +208,7 @@ const CommandCenterMockup = () => {
     );
 };
 
-const SecurityMockup = () => {
+const SecurityMockup = ({ isMobile }) => {
     return (
         <div style={{ position: 'relative', width: '80%', height: '80%', translateZ: 30 }}>
             {/* Soft background aura - Red/Orange biased for security warning */}
@@ -217,27 +217,27 @@ const SecurityMockup = () => {
             {/* Glowing Border Card */}
             <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '16px', background: 'linear-gradient(135deg, #ef4444 0%, #fbbf24 50%, #3b82f6 100%)', padding: '1.5px', zIndex: 1, boxShadow: '0 20px 40px rgba(0,0,0,0.06)' }}>
                 {/* Inner Card */}
-                <div style={{ background: '#ffffff', width: '100%', height: '100%', borderRadius: '15px', padding: '32px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div style={{ background: '#ffffff', width: '100%', height: '100%', borderRadius: '15px', padding: isMobile ? '20px' : '32px', display: 'flex', flexDirection: 'column', gap: isMobile ? '12px' : '24px' }}>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#ef4444', fontSize: '0.9rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                         <ShieldAlert size={16} /> Edge Threat Detected
                     </div>
 
                     <div>
-                        <div style={{ fontSize: '1.4rem', fontWeight: 500, color: '#111827', marginBottom: '8px', letterSpacing: '-0.02em' }}>Unauthorized Access Attempt</div>
-                        <div style={{ fontSize: '0.9rem', color: '#6b7280', lineHeight: 1.6 }}>
-                            A suspicious login was flagged coming from an unrecognized IP range outside corporate bounds.
+                        <div style={{ fontSize: isMobile ? '1.1rem' : '1.4rem', fontWeight: 500, color: '#111827', marginBottom: '8px', letterSpacing: '-0.02em', lineHeight: 1.2 }}>Unauthorized Access Attempt</div>
+                        <div style={{ fontSize: isMobile ? '0.8rem' : '0.9rem', color: '#6b7280', lineHeight: 1.5 }}>
+                            A suspicious login flag: unrecognized IP range outside corporate bounds.
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: 'auto' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', background: '#f9fafb', borderRadius: '8px', fontSize: '0.85rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '8px' : '12px', marginTop: 'auto' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: isMobile ? '8px 12px' : '12px', background: '#f9fafb', borderRadius: '8px', fontSize: isMobile ? '0.75rem' : '0.85rem' }}>
                             <span style={{ color: '#6b7280', display: 'flex', alignItems: 'center', gap: '6px' }}><Server size={14} /> Source Node</span>
                             <span style={{ color: '#111827', fontFamily: 'monospace' }}>192.168.1.104</span>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', background: '#fef2f2', border: '1px solid #fee2e2', borderRadius: '8px', fontSize: '0.85rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: isMobile ? '8px 12px' : '12px', background: '#fef2f2', border: '1px solid #fee2e2', borderRadius: '8px', fontSize: isMobile ? '0.75rem' : '0.85rem' }}>
                             <span style={{ color: '#ef4444', display: 'flex', alignItems: 'center', gap: '6px' }}><Lock size={14} /> Action Taken</span>
-                            <span style={{ color: '#ef4444', fontWeight: 500 }}>Connection Terminated</span>
+                            <span style={{ color: '#ef4444', fontWeight: 500 }}>Terminated</span>
                         </div>
                     </div>
 
