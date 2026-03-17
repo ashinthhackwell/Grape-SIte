@@ -1,21 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
-const useBreakpoint = () => {
-    const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-    useEffect(() => {
-        const handle = () => setWidth(window.innerWidth);
-        window.addEventListener('resize', handle);
-        return () => window.removeEventListener('resize', handle);
-    }, []);
-    return { isMobile: width <= 640 };
-};
-
 const Footer = () => {
-    const { isMobile } = useBreakpoint();
     return (
         <footer style={{
-            padding: isMobile ? '60px 24px 32px' : '100px 40px 40px 40px',
+            padding: 'clamp(60px, 8vw, 100px) clamp(24px, 4vw, 40px) clamp(32px, 4vw, 40px)',
             background: 'transparent',
             position: 'relative',
             borderTop: '1px solid rgba(0,0,0,0.04)',
@@ -78,16 +67,15 @@ const Footer = () => {
             </motion.div>
 
             <motion.div
+                className="flex-responsive-row"
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, margin: '-20px' }}
                 transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 style={{
-                    display: 'flex',
-                    flexDirection: isMobile ? 'column' : 'row',
-                    alignItems: isMobile ? 'center' : 'flex-start',
+                    alignItems: 'center',
                     justifyContent: 'space-between',
-                    gap: isMobile ? '16px' : '0',
+                    gap: 'clamp(0px, 2vw, 16px)',
                     color: 'var(--text-secondary)',
                     fontSize: '0.875rem',
                     position: 'relative',

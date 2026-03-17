@@ -1,19 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { ShieldAlert, Activity, Users, Clock, Cpu, Server, Lock } from 'lucide-react';
 
-const useBreakpoint = () => {
-    const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-    useEffect(() => {
-        const handle = () => setWidth(window.innerWidth);
-        window.addEventListener('resize', handle);
-        return () => window.removeEventListener('resize', handle);
-    }, []);
-    return { isMobile: width <= 640, isTablet: width <= 768, isSmallLaptop: width <= 1024, width };
-};
-
 const Advantages = () => {
-    const { isMobile, isTablet } = useBreakpoint();
 
     const advantages = [
         {
@@ -37,18 +26,18 @@ const Advantages = () => {
     ];
 
     return (
-        <section style={{ padding: isMobile ? '20px 16px 80px' : '40px 24px 160px 24px', maxWidth: '1200px', margin: '0 auto', position: 'relative', overflow: 'hidden' }}>
+        <section className="section-wrapper" style={{ paddingBottom: 'clamp(80px, 12vw, 160px)', maxWidth: '1200px', margin: '0 auto', position: 'relative', overflow: 'hidden' }}>
             {/* The global background overrides this but keeping relative positioning */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '80px' : isTablet ? '140px' : '240px', position: 'relative', zIndex: 1 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(80px, 15vw, 240px)', position: 'relative', zIndex: 1 }}>
                 {advantages.map((adv, idx) => (
-                    <AdvantageRow key={idx} {...adv} isMobile={isMobile} isTablet={isTablet} />
+                    <AdvantageRow key={idx} {...adv} />
                 ))}
             </div>
         </section>
     );
 };
 
-const AdvantageRow = ({ title, description, reverse, id, isMobile, isTablet }) => {
+const AdvantageRow = ({ title, description, reverse, id }) => {
     const x = useMotionValue(200);
     const y = useMotionValue(200);
 
@@ -62,11 +51,8 @@ const AdvantageRow = ({ title, description, reverse, id, isMobile, isTablet }) =
     }
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: isTablet ? 'column' : (reverse ? 'row-reverse' : 'row'),
+        <div className={reverse ? "flex-responsive-row-reverse" : "flex-responsive-row"} style={{
             alignItems: 'center',
-            gap: isMobile ? '40px' : '100px',
             flexWrap: 'wrap'
         }}>
             <motion.div
@@ -74,12 +60,12 @@ const AdvantageRow = ({ title, description, reverse, id, isMobile, isTablet }) =
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, margin: "-100px" }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                style={{ flex: '1 1 400px', textAlign: isTablet ? 'center' : 'left' }}
+                style={{ flex: '1 1 400px' }}
             >
                 <h3 style={{ fontSize: 'clamp(2.5rem, 4vw, 3.25rem)', fontWeight: 500, letterSpacing: '-0.02em', marginBottom: '24px', color: '#111827', lineHeight: 1.1 }}>
                     {title}
                 </h3>
-                <p style={{ color: '#4b5563', fontSize: isMobile ? '1.1rem' : '1.25rem', lineHeight: 1.6, fontWeight: 400 }}>
+                <p className="text-fluid-p" style={{ color: '#4b5563', fontWeight: 400 }}>
                     {description}
                 </p>
             </motion.div>
@@ -100,7 +86,7 @@ const AdvantageRow = ({ title, description, reverse, id, isMobile, isTablet }) =
                     style={{
                         position: 'relative',
                         width: '100%',
-                        height: isMobile ? '300px' : '400px',
+                        height: 'clamp(300px, 40vw, 400px)',
                         rotateX,
                         rotateY,
                         transformStyle: "preserve-3d",

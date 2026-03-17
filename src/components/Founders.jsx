@@ -2,16 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, animate } from 'framer-motion';
 import { Play, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const useBreakpoint = () => {
-    const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-    useEffect(() => {
-        const handle = () => setWidth(window.innerWidth);
-        window.addEventListener('resize', handle);
-        return () => window.removeEventListener('resize', handle);
-    }, []);
-    return { isMobile: width <= 640, isTablet: width <= 768, isSmallLaptop: width <= 1024, width };
-};
-
 const foundersData = [
     {
         role: "Frontend\ndeveloper",
@@ -75,8 +65,10 @@ const Founders = () => {
     const scrollTimeout = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isHoveringImage, setIsHoveringImage] = useState(false);
-    const { isMobile, isTablet } = useBreakpoint();
-    const pLeft = isMobile ? 24 : 100;
+    
+    // Base padding-left scales down on mobile purely through CSS calculations where used.
+    // Instead of a strict JS number, we'll map the inline styles to clamp.
+    const pLeftCSS = 'clamp(24px, 6vw, 100px)';
 
     // Smooth cursor globally tracking viewport mouse
     const mouseX = useMotionValue(0);
@@ -116,7 +108,10 @@ const Founders = () => {
             isScrollingProgrammatically.current = true;
             setCurrentIndex(index);
 
-            const requiredScroll = targetChild.offsetLeft - pLeft;
+            // Get actual computed padding dynamically instead of relying on JS state
+            const computedPaddingStr = window.getComputedStyle(scrollRef.current).paddingLeft;
+            const computedPadding = parseInt(computedPaddingStr) || 100;
+            const requiredScroll = targetChild.offsetLeft - computedPadding;
 
             scrollRef.current.scrollTo({
                 left: requiredScroll,
@@ -185,11 +180,11 @@ const Founders = () => {
                         className="hide-scroll"
                         style={{
                             display: 'flex',
-                            gap: isMobile ? '16px' : '32px',
+                            gap: 'clamp(16px, 3vw, 32px)',
                             overflowX: 'auto',
                             paddingBottom: '32px',
                             scrollSnapType: 'x mandatory',
-                            paddingLeft: `${pLeft}px`,
+                            paddingLeft: pLeftCSS,
                             paddingRight: '100vw'
                         }}
                     >
@@ -199,9 +194,9 @@ const Founders = () => {
                                 <div
                                     key={idx}
                                     style={{
-                                        flex: isMobile ? '0 0 min(85vw, 800px)' : '0 0 min(75vw, 800px)',
+                                        flex: '0 0 clamp(280px, 80vw, 800px)',
                                         scrollSnapAlign: 'start',
-                                        scrollMarginLeft: `${pLeft}px`
+                                        scrollMarginLeft: pLeftCSS
                                     }}
                                 >
                                     {/* The Image Box */}
@@ -240,9 +235,9 @@ const Founders = () => {
                                         {/* Overlaid Animated Role Text */}
                                         <div style={{
                                             position: 'absolute',
-                                            bottom: isMobile ? '24px' : '48px',
-                                            left: isMobile ? '24px' : '48px',
-                                            height: isMobile ? '80px' : '100px', // Adjusted for smaller text
+                                            bottom: 'clamp(24px, 4vw, 48px)',
+                                            left: 'clamp(24px, 4vw, 48px)',
+                                            height: 'clamp(80px, 8vw, 100px)', // Adjusted for smaller text
                                             color: '#ffffff',
                                             fontSize: 'clamp(1.5rem, 4vw, 2.75rem)',
                                             fontWeight: 400, // Reduced from 600 for a much thinner, elegant look
@@ -272,15 +267,13 @@ const Founders = () => {
                     </div>
 
                     <div
+                        className="flex-responsive-row"
                         style={{
                             width: '100%',
-                            paddingLeft: `${pLeft}px`,
-                            paddingRight: `max(${pLeft}px, calc(50% - 626px))`,
-                            display: 'flex',
-                            flexDirection: isMobile ? 'column' : 'row',
+                            paddingLeft: pLeftCSS,
+                            paddingRight: `max(${pLeftCSS}, calc(50% - 626px))`,
                             justifyContent: 'space-between',
-                            alignItems: isMobile ? 'flex-start' : 'flex-start',
-                            gap: isMobile ? '32px' : '24px'
+                            alignItems: 'flex-start'
                         }}
                     >
                         <div style={{ maxWidth: '600px', position: 'relative' }}>

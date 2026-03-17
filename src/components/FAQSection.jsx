@@ -1,16 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
-
-const useBreakpoint = () => {
-    const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-    useEffect(() => {
-        const handle = () => setWidth(window.innerWidth);
-        window.addEventListener('resize', handle);
-        return () => window.removeEventListener('resize', handle);
-    }, []);
-    return { isMobile: width <= 640 };
-};
 
 const faqData = [
     {
@@ -95,7 +85,7 @@ const faqData = [
     },
 ];
 
-const FAQItem = ({ question, answer, isOpen, onClick, index, isMobile }) => {
+const FAQItem = ({ question, answer, isOpen, onClick, index }) => {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -126,7 +116,7 @@ const FAQItem = ({ question, answer, isOpen, onClick, index, isMobile }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: isMobile ? '16px 20px' : '20px 24px',
+                padding: 'clamp(16px, 2vw, 20px) clamp(20px, 3vw, 24px)',
                 gap: '16px'
             }}>
                 <span style={{
@@ -172,7 +162,7 @@ const FAQItem = ({ question, answer, isOpen, onClick, index, isMobile }) => {
                         style={{ overflow: 'hidden' }}
                     >
                         <div style={{
-                            padding: isMobile ? '0 20px 16px' : '0 24px 20px',
+                            padding: '0 clamp(20px, 3vw, 24px) clamp(16px, 2vw, 20px)',
                             fontSize: '0.88rem',
                             color: '#64748b',
                             lineHeight: 1.7,
@@ -189,7 +179,6 @@ const FAQItem = ({ question, answer, isOpen, onClick, index, isMobile }) => {
 
 const FAQSection = () => {
     const [openIndex, setOpenIndex] = useState(null);
-    const { isMobile } = useBreakpoint();
 
     const toggle = (index) => {
         setOpenIndex(openIndex === index ? null : index);
@@ -203,8 +192,8 @@ const FAQSection = () => {
             width: '100%',
             maxWidth: '860px',
             margin: '0 auto',
-            padding: isMobile ? '0 16px' : '0 20px',
-            marginBottom: isMobile ? '80px' : '120px'
+            padding: '0 clamp(16px, 3vw, 20px)',
+            marginBottom: 'clamp(80px, 10vw, 120px)'
         }}>
             {/* Main Section Header */}
             <motion.div
@@ -214,8 +203,7 @@ const FAQSection = () => {
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 style={{ textAlign: 'center', marginBottom: '56px' }}
             >
-                <h2 style={{
-                    fontSize: isMobile ? '2rem' : '2.4rem',
+                <h2 className="text-fluid-h2" style={{
                     fontWeight: 700,
                     color: '#111',
                     margin: '0 0 8px',
@@ -249,7 +237,6 @@ const FAQSection = () => {
                         isOpen={openIndex === `general-${index}`}
                         onClick={() => toggle(`general-${index}`)}
                         index={index}
-                        isMobile={isMobile}
                     />
                 ))}
             </div>
@@ -262,8 +249,7 @@ const FAQSection = () => {
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 style={{ textAlign: 'center', marginBottom: '40px' }}
             >
-                <h3 style={{
-                    fontSize: isMobile ? '1.5rem' : '1.8rem',
+                <h3 className="text-fluid-h3" style={{
                     fontWeight: 700,
                     color: '#111',
                     margin: 0,
@@ -287,7 +273,6 @@ const FAQSection = () => {
                         isOpen={openIndex === `founder-${index}`}
                         onClick={() => toggle(`founder-${index}`)}
                         index={index}
-                        isMobile={isMobile}
                     />
                 ))}
             </div>

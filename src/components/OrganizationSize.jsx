@@ -2,16 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import GrapeParticles from './GrapeParticles';
 
-const useBreakpoint = () => {
-    const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-    useEffect(() => {
-        const handle = () => setWidth(window.innerWidth);
-        window.addEventListener('resize', handle);
-        return () => window.removeEventListener('resize', handle);
-    }, []);
-    return { isMobile: width <= 640, isTablet: width <= 768, isSmallLaptop: width <= 1024, width };
-};
-
 const OrganizationSize = () => {
     const sectionRef = useRef(null);
     const teamsRef = useRef(null);
@@ -20,7 +10,6 @@ const OrganizationSize = () => {
     const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
     const [hoverState, setHoverState] = useState('none');
     const [cardRects, setCardRects] = useState({ teams: null, enterprise: null });
-    const { isMobile, isTablet } = useBreakpoint();
 
     useEffect(() => {
         const measure = () => {
@@ -91,12 +80,7 @@ const OrganizationSize = () => {
             {/* The interactive organic particle background replaces the static CSS grid */}
             <GrapeParticles mousePos={mousePos} hoverState={hoverState} cardRects={cardRects} />
 
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: `repeat(auto-fit, minmax(${isMobile ? '280px' : '340px'}, 1fr))`,
-                gap: isMobile ? '20px' : '40px',
-                width: '100%',
-                maxWidth: '1200px',
+            <div className="grid-responsive-2col max-container" style={{
                 position: 'relative',
                 zIndex: 1
             }}>
@@ -106,7 +90,7 @@ const OrganizationSize = () => {
                     onMouseEnter={() => setHoverState('teams')}
                     onMouseLeave={() => setHoverState('none')}
                     style={{
-                        padding: isMobile ? '60px 20px' : '120px 40px',
+                        padding: 'clamp(60px, 8vw, 120px) clamp(20px, 4vw, 40px)',
                         textAlign: 'center',
                         position: 'relative',
                         zIndex: 2,
@@ -127,10 +111,10 @@ const OrganizationSize = () => {
                         Available at no charge
                     </div>
 
-                    <h3 style={{ fontSize: isMobile ? '2rem' : '3rem', fontWeight: 400, marginBottom: '8px', letterSpacing: '-0.04em', color: '#111' }}>
+                    <h3 className="text-fluid-h3" style={{ fontWeight: 400, marginBottom: '8px', letterSpacing: '-0.04em', color: '#111' }}>
                         For developers
                     </h3>
-                    <p style={{ color: '#4b5563', marginBottom: '48px', fontSize: isMobile ? '1.5rem' : '2.5rem', fontWeight: 400, letterSpacing: '-0.04em', lineHeight: 1.2 }}>
+                    <p style={{ color: '#4b5563', marginBottom: '48px', fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 400, letterSpacing: '-0.04em', lineHeight: 1.2 }}>
                         Achieve new heights
                     </p>
 
@@ -153,7 +137,7 @@ const OrganizationSize = () => {
                     onMouseEnter={() => setHoverState('enterprise')}
                     onMouseLeave={() => setHoverState('none')}
                     style={{
-                        padding: isMobile ? '60px 20px' : '120px 40px',
+                        padding: 'clamp(60px, 8vw, 120px) clamp(20px, 4vw, 40px)',
                         textAlign: 'center',
                         position: 'relative',
                         zIndex: 2,
@@ -174,10 +158,10 @@ const OrganizationSize = () => {
                         Coming soon
                     </div>
 
-                    <h3 style={{ fontSize: isMobile ? '2rem' : '3rem', fontWeight: 400, marginBottom: '8px', letterSpacing: '-0.04em', color: '#111' }}>
+                    <h3 className="text-fluid-h3" style={{ fontWeight: 400, marginBottom: '8px', letterSpacing: '-0.04em', color: '#111' }}>
                         For organizations
                     </h3>
-                    <p style={{ color: '#4b5563', marginBottom: '48px', fontSize: isMobile ? '1.5rem' : '2.5rem', fontWeight: 400, letterSpacing: '-0.04em', lineHeight: 1.2 }}>
+                    <p style={{ color: '#4b5563', marginBottom: '48px', fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 400, letterSpacing: '-0.04em', lineHeight: 1.2 }}>
                         Level up your entire team
                     </p>
 

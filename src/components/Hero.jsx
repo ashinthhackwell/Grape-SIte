@@ -3,17 +3,6 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Apple, Monitor } from 'lucide-react';
 import InteractiveCanvas from './InteractiveCanvas';
 
-const useIsMobile = (breakpoint = 640) => {
-    const [isMobile, setIsMobile] = useState(false);
-    useEffect(() => {
-        const check = () => setIsMobile(window.innerWidth <= breakpoint);
-        check();
-        window.addEventListener('resize', check);
-        return () => window.removeEventListener('resize', check);
-    }, [breakpoint]);
-    return isMobile;
-};
-
 const Hero = () => {
     const { scrollY } = useScroll();
     const y1 = useTransform(scrollY, [0, 1000], [0, 150]);
@@ -67,22 +56,8 @@ const Hero = () => {
     const isTypingLine1 = isTyping && !typedText.includes('\n');
     const isTypingLine2 = isTyping && typedText.includes('\n');
 
-    const isMobile = useIsMobile();
-    const isTablet = useIsMobile(1024);
-
     return (
-        <section style={{
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: isMobile ? '0 16px' : '0 24px',
-            position: 'relative',
-            overflow: 'hidden',
-            paddingTop: isMobile ? '60px' : '80px',
-            background: 'transparent'
-        }}>
+        <section className="section-wrapper" style={{ minHeight: '100vh', justifyContent: 'center', background: 'transparent' }}>
             {/* Beautiful Custom Interactive Node Canvas with Physics */}
             <InteractiveCanvas />
 
@@ -91,14 +66,12 @@ const Hero = () => {
             >
                 <motion.div>
                     <motion.h1
+                        className="text-fluid-h1"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                         style={{
-                            fontSize: 'clamp(3rem, 6vw, 5.5rem)',
                             fontWeight: 500, // Leaner modern typography weight (Inter/Geist)
-                            letterSpacing: '0.05em', // Elegantly tight
-                            lineHeight: 1,
                             marginBottom: '0',
                             color: '#111',
                             display: 'inline-block'
@@ -142,20 +115,16 @@ const Hero = () => {
 
 
                 <motion.div
+                    className="flex-responsive-row"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: isTyping ? 0 : 1, y: isTyping ? 20 : 0 }}
                     transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                     style={{
-                        display: 'flex',
-                        flexDirection: isMobile ? 'column' : 'row',
-                        gap: isMobile ? '12px' : '24px',
                         justifyContent: 'center',
-                        alignItems: 'center',
                         flexWrap: 'wrap',
-                        marginTop: isMobile ? '28px' : '40px',
-                        marginBottom: isMobile ? '60px' : '100px',
+                        marginTop: 'clamp(28px, 4vw, 40px)',
+                        marginBottom: 'clamp(60px, 8vw, 100px)',
                         pointerEvents: isTyping ? 'none' : 'auto',
-                        width: isMobile ? '100%' : 'auto'
                     }}
                 >
                     <motion.a
@@ -165,7 +134,7 @@ const Hero = () => {
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
                         style={{ color: '#fff' }}
                     >
-                        <div className="premium-glow-btn-inner" style={{ background: '#111', padding: '16px 36px' }}>
+                        <div className="premium-glow-btn-inner mobile-full-btn" style={{ background: '#111', padding: '16px 36px' }}>
                             <Monitor size={18} />
                             <span>Download for Windows</span>
                         </div>
@@ -173,12 +142,12 @@ const Hero = () => {
 
                     <motion.a
                         href="#"
-                        className="premium-glow-btn"
+                        className="premium-glow-btn mobile-full-btn"
                         whileHover={{ scale: 1.04 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
                         style={{ color: '#111' }}
                     >
-                        <div className="premium-glow-btn-inner" style={{ background: '#fff', padding: '16px 36px', border: '1px solid rgba(0,0,0,0.1)' }}>
+                        <div className="premium-glow-btn-inner mobile-full-btn" style={{ background: '#fff', padding: '16px 36px', border: '1px solid rgba(0,0,0,0.1)' }}>
                             <Apple size={18} />
                             <span>Download for Mac</span>
                         </div>

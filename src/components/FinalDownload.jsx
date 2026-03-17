@@ -1,16 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Apple, Monitor, ArrowRight } from 'lucide-react';
-
-const useBreakpoint = () => {
-    const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-    useEffect(() => {
-        const handle = () => setWidth(window.innerWidth);
-        window.addEventListener('resize', handle);
-        return () => window.removeEventListener('resize', handle);
-    }, []);
-    return { isMobile: width <= 640, isTablet: width <= 768, isSmallLaptop: width <= 1024, width };
-};
 import InteractiveCanvas from './InteractiveCanvas';
 
 const Typewriter = ({ text, speed = 40, onDone }) => {
@@ -56,11 +46,11 @@ const FinalDownload = () => {
     const sectionRef = useRef(null);
     const isInView = useInView(sectionRef, { once: false, margin: "-100px" });
     const [textDone, setTextDone] = useState(false);
-    const { isMobile } = useBreakpoint();
 
     return (
-        <section ref={sectionRef} style={{
-            padding: isMobile ? '140px 0 120px' : '260px 0 200px',
+        <section ref={sectionRef} className="section-wrapper" style={{
+            paddingTop: 'clamp(140px, 15vw, 260px)',
+            paddingBottom: 'clamp(120px, 12vw, 200px)',
             minHeight: '110vh',
             position: 'relative',
             overflow: 'hidden',
@@ -72,12 +62,12 @@ const FinalDownload = () => {
             {/* Interactive particle canvas — same as Hero section */}
             <InteractiveCanvas />
 
-            <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', padding: isMobile ? '0 24px' : '0 48px' }}>
+            <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(24px, 5vw, 48px)' }}>
                 <h2 style={{
-                    fontSize: isMobile ? 'clamp(1.75rem, 8vw, 3.2rem)' : 'clamp(2rem, 4vw, 3.2rem)',
+                    fontSize: 'clamp(2rem, 5vw, 3.2rem)',
                     fontWeight: 400,
                     letterSpacing: '-0.02em',
-                    marginBottom: isMobile ? '24px' : '40px',
+                    marginBottom: 'clamp(24px, 3vw, 40px)',
                     lineHeight: 1.3,
                     color: '#111',
                     maxWidth: '500px'
@@ -92,25 +82,22 @@ const FinalDownload = () => {
                 </h2>
 
                 <motion.div
+                    className="flex-responsive-row"
                     initial={{ opacity: 0, y: 15 }}
                     animate={textDone ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
                     style={{
-                        display: 'flex',
-                        gap: isMobile ? '16px' : '24px',
-                        flexDirection: isMobile ? 'column' : 'row',
-                        width: isMobile ? '100%' : 'auto',
                         opacity: textDone ? undefined : 0
                     }}
                 >
                     <motion.a
                         href="#"
-                        className="premium-glow-btn"
+                        className="premium-glow-btn mobile-full-btn"
                         whileHover={{ scale: 1.04 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
                         style={{ color: '#fff' }}
                     >
-                        <div className="premium-glow-btn-inner" style={{ background: '#111', padding: isMobile ? '16px' : '16px 36px', display: 'flex', justifyContent: 'center' }}>
+                        <div className="premium-glow-btn-inner mobile-full-btn" style={{ background: '#111', padding: '16px 36px', display: 'flex', justifyContent: 'center' }}>
                             <Monitor size={18} />
                             <span>Download for Windows</span>
                         </div>
@@ -118,12 +105,12 @@ const FinalDownload = () => {
 
                     <motion.a
                         href="#"
-                        className="premium-glow-btn"
+                        className="premium-glow-btn mobile-full-btn"
                         whileHover={{ scale: 1.04 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
                         style={{ color: '#111' }}
                     >
-                        <div className="premium-glow-btn-inner" style={{ background: '#fff', padding: isMobile ? '16px' : '16px 36px', border: '1px solid rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'center' }}>
+                        <div className="premium-glow-btn-inner mobile-full-btn" style={{ background: '#fff', padding: '16px 36px', border: '1px solid rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'center' }}>
                             <Apple size={18} />
                             <span>Download for Mac</span>
                         </div>

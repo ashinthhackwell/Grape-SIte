@@ -1,15 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-
-const useBreakpoint = () => {
-    const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-    useEffect(() => {
-        const handle = () => setWidth(window.innerWidth);
-        window.addEventListener('resize', handle);
-        return () => window.removeEventListener('resize', handle);
-    }, []);
-    return { isMobile: width <= 640, isTablet: width <= 768, isSmallLaptop: width <= 1024, width };
-};
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DownloadAgentAnimation from './DownloadAgentAnimation';
@@ -17,23 +7,23 @@ import LoginCredentialsAnimation from './LoginCredentialsAnimation';
 import PairAgentAnimation from './PairAgentAnimation';
 import FAQSection from './FAQSection';
 
-const StepSection = ({ step, title, description, isReversed, AnimationComponent, isMobile }) => {
+const StepSection = ({ step, title, description, isReversed, AnimationComponent }) => {
     return (
         <motion.div
+            className={isReversed ? "flex-responsive-row-reverse" : "flex-responsive-row"}
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-100px" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             style={{
-                display: 'flex',
-                flexDirection: isMobile ? 'column' : (isReversed ? 'row-reverse' : 'row'),
-                alignItems: isMobile ? 'flex-start' : 'center',
-                gap: isMobile ? '32px' : '60px',
-                marginBottom: isMobile ? '60px' : '120px',
-                width: '100%'
+                alignItems: 'center',
+                gap: 'clamp(32px, 5vw, 60px)',
+                marginBottom: 'clamp(60px, 8vw, 120px)',
+                width: '100%',
+                flexWrap: 'wrap'
             }}
         >
-            <div style={{ flex: 1, minWidth: isMobile ? '100%' : '300px' }}>
+            <div style={{ flex: '1 1 300px', minWidth: '280px' }}>
                 <span style={{
                     fontSize: '14px',
                     fontWeight: 600,
@@ -45,8 +35,7 @@ const StepSection = ({ step, title, description, isReversed, AnimationComponent,
                 }}>
                     Step {step}
                 </span>
-                <h3 style={{
-                    fontSize: isMobile ? '1.75rem' : '2.5rem',
+                <h3 className="text-fluid-h3" style={{
                     fontWeight: 500,
                     color: '#111',
                     marginBottom: '24px',
@@ -55,7 +44,7 @@ const StepSection = ({ step, title, description, isReversed, AnimationComponent,
                 }}>
                     {title}
                 </h3>
-                <p style={{
+                <p className="text-fluid-p" style={{
                     fontSize: '1.1rem',
                     color: '#666',
                     lineHeight: 1.6,
@@ -66,9 +55,9 @@ const StepSection = ({ step, title, description, isReversed, AnimationComponent,
             </div>
 
             <div style={{
-                flex: 1,
-                minWidth: isMobile ? '100%' : '300px',
-                height: isMobile ? '300px' : '420px',
+                flex: '1 1 300px',
+                minWidth: '280px',
+                height: 'clamp(300px, 40vw, 420px)',
                 background: '#fff',
                 borderRadius: '32px',
                 border: '1px solid rgba(0,0,0,0.05)',
@@ -112,8 +101,6 @@ const StepSection = ({ step, title, description, isReversed, AnimationComponent,
 };
 
 const Help = () => {
-    const { isMobile } = useBreakpoint();
-
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
@@ -140,7 +127,7 @@ const Help = () => {
         <div style={{
             minHeight: '100vh',
             background: '#fafafa',
-            padding: isMobile ? '80px 16px 60px' : '120px 24px 80px',
+            padding: 'clamp(80px, 10vw, 120px) Math.max(16px, 4vw) clamp(60px, 8vw, 80px)',
             position: 'relative',
             overflow: 'hidden'
         }}>
@@ -159,7 +146,7 @@ const Help = () => {
                         gap: '8px',
                         color: '#666',
                         textDecoration: 'none',
-                        marginBottom: isMobile ? '40px' : '80px',
+                        marginBottom: 'clamp(40px, 6vw, 80px)',
                         fontSize: '14px',
                         fontWeight: 500,
                         transition: 'color 0.3s ease'
@@ -169,7 +156,7 @@ const Help = () => {
                     </Link>
                 </motion.div>
 
-                <div style={{ marginBottom: isMobile ? '80px' : '160px' }}>
+                <div style={{ marginBottom: 'clamp(80px, 10vw, 160px)' }}>
                     {steps.map((item, index) => (
                         <StepSection
                             key={index}
@@ -178,7 +165,6 @@ const Help = () => {
                             description={item.description}
                             isReversed={index % 2 !== 0}
                             AnimationComponent={index === 0 ? DownloadAgentAnimation : index === 1 ? LoginCredentialsAnimation : index === 2 ? PairAgentAnimation : null}
-                            isMobile={isMobile}
                         />
                     ))}
                 </div>
@@ -194,7 +180,7 @@ const Help = () => {
                         style={{
                             background: '#111',
                             borderRadius: '24px',
-                            padding: isMobile ? '40px 20px' : '60px',
+                            padding: 'clamp(40px, 6vw, 60px) clamp(20px, 5vw, 60px)',
                             textAlign: 'center',
                             color: '#fff',
                             position: 'relative',
@@ -204,12 +190,12 @@ const Help = () => {
                         }}
                     >
                         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <h2 style={{ fontSize: isMobile ? '1.5rem' : '2rem', fontWeight: 500, marginBottom: '16px' }}>Still need help?</h2>
+                            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: 500, marginBottom: '16px' }}>Still need help?</h2>
                             <p style={{ color: '#aaa', marginBottom: '32px', maxWidth: '500px', margin: '0 auto 32px' }}>
                                 Our engineering team is always available for technical consultations and troubleshooting.
                             </p>
-                            <a href="mailto:support@grape.com" className="premium-glow-btn" style={{ color: '#fff', width: isMobile ? '100%' : 'auto' }}>
-                                <div className="premium-glow-btn-inner" style={{ background: '#333', padding: '12px 32px', display: 'flex', justifyContent: 'center' }}>
+                            <a href="mailto:support@grape.com" className="premium-glow-btn mobile-full-btn" style={{ color: '#fff' }}>
+                                <div className="premium-glow-btn-inner mobile-full-btn" style={{ background: '#333', padding: '12px 32px', display: 'flex', justifyContent: 'center' }}>
                                     <span>Contact Support</span>
                                 </div>
                             </a>

@@ -6,39 +6,8 @@ import {
     Wifi, HardDrive, AlertTriangle, Key, Search
 } from 'lucide-react';
 
-const useBreakpoint = () => {
-    const [breakpoints, setBreakpoints] = useState(() => {
-        const w = typeof window !== 'undefined' ? window.innerWidth : 1200;
-        return { isMobile: w <= 640, isTablet: w <= 768, isSmallLaptop: w <= 1024 };
-    });
-
-    useEffect(() => {
-        let timeoutId;
-        const handle = () => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-                const w = window.innerWidth;
-                setBreakpoints(prev => {
-                    const next = { isMobile: w <= 640, isTablet: w <= 768, isSmallLaptop: w <= 1024 };
-                    if (prev.isMobile === next.isMobile && prev.isTablet === next.isTablet && prev.isSmallLaptop === next.isSmallLaptop) {
-                        return prev;
-                    }
-                    return next;
-                });
-            }, 50); // slight debounce avoids thrashing
-        };
-        window.addEventListener('resize', handle);
-        return () => {
-            window.removeEventListener('resize', handle);
-            clearTimeout(timeoutId);
-        };
-    }, []);
-    return breakpoints;
-};
-
 const DemoSection = () => {
     const containerRef = useRef(null);
-    const { isMobile, isTablet } = useBreakpoint();
 
     // Scroll-driven animation tracking the stable container
     const { scrollYProgress } = useScroll({
@@ -165,27 +134,27 @@ const DemoSection = () => {
     ];
 
     return (
-        <section style={{ padding: isMobile ? '40px 16px 160px' : isTablet ? '60px 20px 200px' : '80px 24px 280px 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: isMobile ? '40px' : '80px', position: 'relative', background: 'transparent' }}>
+        <section className="section-wrapper demo-section-padding" style={{ position: 'relative', background: 'transparent' }}>
             {/* Stable tracker for inView that does not animate its transform/scale */}
-            <div ref={containerRef} style={{ width: '100%', maxWidth: '1200px', display: 'flex', justifyContent: 'center' }}>
+            <div ref={containerRef} className="demo-dashboard-tracker max-container">
                 <motion.div
                     style={{
                         opacity: containerOpacity,
                         y: containerY,
                         scale: containerScale,
                         width: '100%',
-                    aspectRatio: isTablet ? 'auto' : '16/9',
-                    minHeight: isTablet ? '600px' : 'auto',
-                    borderRadius: '16px',
-                    background: '#f9fafb', // Light gray background matching real app
-                    border: '1px solid rgba(0,0,0,0.1)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    boxShadow: '0 40px 80px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)'
-                }}
-            >
+                        aspectRatio: '16/9',
+                        minHeight: 'auto',
+                        borderRadius: '16px',
+                        background: '#f9fafb', // Light gray background matching real app
+                        border: '1px solid rgba(0,0,0,0.1)',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        boxShadow: '0 40px 80px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)'
+                    }}
+                >
                 {/* Mac-like Window Header (Light Mode) */}
                 <div style={{
                     height: '40px',
@@ -208,8 +177,7 @@ const DemoSection = () => {
                 <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
 
                     {/* Sidebar — hidden on tablet/mobile */}
-                    {!isTablet && (
-                    <div style={{ width: '240px', borderRight: '1px solid #e5e7eb', background: '#ffffff', padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '24px', flexShrink: 0 }}>
+                    <div className="hide-on-tablet" style={{ width: '240px', borderRight: '1px solid #e5e7eb', background: '#ffffff', padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '24px', flexShrink: 0 }}>
                         <div>
                             <h2 style={{ fontSize: '14px', fontWeight: 600, color: '#111827', marginBottom: '16px', paddingLeft: '8px' }}>Admin Workspace</h2>
                             <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -239,19 +207,18 @@ const DemoSection = () => {
                             </nav>
                         </div>
                     </div>
-                    )}
 
                     {/* Main Content */}
-                    <div style={{ flex: 1, padding: isMobile ? '16px' : '32px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    <div style={{ flex: 1, padding: 'clamp(16px, 3vw, 32px)', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 3vw, 24px)' }}>
 
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <motion.h1 style={{ opacity: titleOpacity, y: titleY, fontSize: isMobile ? '20px' : '24px', fontWeight: 600, color: '#111827' }}>
+                            <motion.h1 className="text-fluid-h3" style={{ opacity: titleOpacity, y: titleY, fontWeight: 600, color: '#111827' }}>
                                 Dashboard Overview
                             </motion.h1>
                         </div>
 
                         {/* Summary Cards */}
-                        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? '12px' : '16px' }}>
+                        <div className="grid-responsive-4col">
                             {metrics.map((metric, i) => (
                                 <motion.div
                                     key={i}
@@ -276,11 +243,12 @@ const DemoSection = () => {
                         </div>
 
                         {/* Middle Row: Table & Chart */}
-                        <div style={{ display: 'grid', gridTemplateColumns: isTablet ? '1fr' : '2fr 1fr', gap: isMobile ? '16px' : '24px', flex: 1 }}>
+                        <div className="flex-responsive-row" style={{ flex: 1, alignItems: 'flex-start' }}>
 
                             {/* Live Active Sessions Table */}
                             <motion.div
                                 style={{
+                                    flex: 2,
                                     opacity: tableOpacity,
                                     y: tableY,
                                     background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden',
@@ -324,6 +292,7 @@ const DemoSection = () => {
                             {/* Daily Hours Chart Graphic */}
                             <motion.div
                                 style={{
+                                    flex: 1,
                                     opacity: chartOpacity,
                                     y: chartY,
                                     background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '12px', padding: '20px',
@@ -384,7 +353,7 @@ const DemoSection = () => {
                 bottom: '-24px',
                 left: 0,
                 right: 0,
-                height: isMobile ? '140px' : '240px',
+                height: 'clamp(140px, 15vw, 240px)',
                 overflow: 'hidden',
                 display: 'flex',
                 alignItems: 'center',
@@ -411,8 +380,8 @@ const DemoSection = () => {
                     }}
                     style={{
                         display: 'flex',
-                        gap: isMobile ? '20px' : '40px',
-                        paddingRight: isMobile ? '20px' : '40px',
+                        gap: 'clamp(20px, 3vw, 40px)',
+                        paddingRight: 'clamp(20px, 3vw, 40px)',
                         width: 'max-content'
                     }}
                 >
@@ -449,8 +418,8 @@ const DemoSection = () => {
                                 }}
                                 transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                                 style={{
-                                    width: isMobile ? '50px' : '80px',
-                                    height: isMobile ? '50px' : '80px',
+                                    width: 'clamp(50px, 6vw, 80px)',
+                                    height: 'clamp(50px, 6vw, 80px)',
                                     borderRadius: '50%',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -460,7 +429,7 @@ const DemoSection = () => {
                                     willChange: 'transform, color, box-shadow'
                                 }}
                             >
-                                <Icon size={isMobile ? 18 : 24} strokeWidth={1.5} />
+                                <Icon style={{ width: 'clamp(18px, 2vw, 24px)', height: 'clamp(18px, 2vw, 24px)' }} strokeWidth={1.5} />
                             </motion.div>
                         );
                     })}
