@@ -73,7 +73,7 @@ const Footer = () => {
                 transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-secondary)', fontSize: '0.875rem', position: 'relative', zIndex: 1 }}
             >
-                <span>Workspace Monitoring Solution</span>
+                <span>Grape</span>
                 <span>&copy; {new Date().getFullYear()} All rights reserved.</span>
             </motion.div>
         </footer>
