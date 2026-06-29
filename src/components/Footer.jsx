@@ -88,7 +88,7 @@ const Footer = () => {
                 }}
             >
                 <span>Uprael</span>
-                <span>&copy; {new Date().getFullYear()} All rights reserved.</span>
+                <span>&copy; {new Date().getFullYear()} All rights reserved. Mithun</span>
             </motion.div>
         </footer>
     );
